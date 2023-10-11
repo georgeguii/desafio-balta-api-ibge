@@ -7,4 +7,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Application\Desafio-Balta-IBGE.Application.csproj" />
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Domain\Desafio-Balta-IBGE.Domain.csproj" />
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Shared\Desafio-Balta-IBGE.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

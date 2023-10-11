@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Domain\Desafio-Balta-IBGE.Domain.csproj" />
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Shared\Desafio-Balta-IBGE.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
