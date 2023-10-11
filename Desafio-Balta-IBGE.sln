@@ -3,7 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio-Balta-IBGE.API", "Desafio-Balta-IBGE.API\Desafio-Balta-IBGE.API.csproj", "{93BCDDF1-7000-4825-8603-AAAFADB5484F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Desafio-Balta-IBGE.API", "Desafio-Balta-IBGE.API\Desafio-Balta-IBGE.API.csproj", "{93BCDDF1-7000-4825-8603-AAAFADB5484F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio-Balta-IBGE.Domain", "Desafio-Balta-IBGE.Domain\Desafio-Balta-IBGE.Domain.csproj", "{FC484613-C126-42F2-BED6-511081785707}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio-Balta-IBGE.Shared", "Desafio-Balta-IBGE.Shared\Desafio-Balta-IBGE.Shared.csproj", "{1EF6213B-0EB1-456D-AC63-23A29C30D763}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio-Balta-IBGE.Application", "Desafio-Balta-IBGE.Application\Desafio-Balta-IBGE.Application.csproj", "{17A0AD87-BED1-4487-9249-2A1A6DC87C1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio-Balta-IBGE.Tests", "Desafio-Balta-IBGE.Tests\Desafio-Balta-IBGE.Tests.csproj", "{05BEDB82-811A-4F6F-8D67-8B660B76B4B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desafio-Balta-IBGE.Infra", "Desafio-Balta-IBGE.Infra\Desafio-Balta-IBGE.Infra.csproj", "{C93C0F21-DFB3-4C7C-8D33-1A4E48A8A5C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{93BCDDF1-7000-4825-8603-AAAFADB5484F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93BCDDF1-7000-4825-8603-AAAFADB5484F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93BCDDF1-7000-4825-8603-AAAFADB5484F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC484613-C126-42F2-BED6-511081785707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC484613-C126-42F2-BED6-511081785707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC484613-C126-42F2-BED6-511081785707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC484613-C126-42F2-BED6-511081785707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EF6213B-0EB1-456D-AC63-23A29C30D763}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EF6213B-0EB1-456D-AC63-23A29C30D763}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EF6213B-0EB1-456D-AC63-23A29C30D763}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EF6213B-0EB1-456D-AC63-23A29C30D763}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17A0AD87-BED1-4487-9249-2A1A6DC87C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A0AD87-BED1-4487-9249-2A1A6DC87C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A0AD87-BED1-4487-9249-2A1A6DC87C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A0AD87-BED1-4487-9249-2A1A6DC87C1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05BEDB82-811A-4F6F-8D67-8B660B76B4B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05BEDB82-811A-4F6F-8D67-8B660B76B4B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05BEDB82-811A-4F6F-8D67-8B660B76B4B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05BEDB82-811A-4F6F-8D67-8B660B76B4B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C93C0F21-DFB3-4C7C-8D33-1A4E48A8A5C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C93C0F21-DFB3-4C7C-8D33-1A4E48A8A5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C93C0F21-DFB3-4C7C-8D33-1A4E48A8A5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C93C0F21-DFB3-4C7C-8D33-1A4E48A8A5C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

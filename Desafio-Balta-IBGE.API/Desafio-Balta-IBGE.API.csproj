@@ -12,4 +12,15 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Application\Desafio-Balta-IBGE.Application.csproj" />
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Domain\Desafio-Balta-IBGE.Domain.csproj" />
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Infra\Desafio-Balta-IBGE.Infra.csproj" />
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Shared\Desafio-Balta-IBGE.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>
