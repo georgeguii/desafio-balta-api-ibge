@@ -28,6 +28,6 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     public void Update(TEntity entity)
         => _dbSet.Update(entity);
 
-    public void DeleteAsync(TEntity entity)
+    public void Delete(TEntity entity)
         => _dbSet.Remove(entity);
 }
