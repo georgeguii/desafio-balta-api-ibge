@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+
+using Microsoft.EntityFrameworkCore;
 
 using Desafio_Balta_IBGE.Shared.Entities;
 using Desafio_Balta_IBGE.Infra.Data.Context;
 using Desafio_Balta_IBGE.Domain.Interfaces.BaseRepository;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace Desafio_Balta_IBGE.Infra.Repositories;
 

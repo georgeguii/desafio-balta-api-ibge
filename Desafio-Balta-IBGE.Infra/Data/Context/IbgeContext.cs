@@ -13,5 +13,7 @@ public class IbgeContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(IbgeContext).Assembly);
+
+        base.OnModelCreating(modelBuilder);
     }
 }
