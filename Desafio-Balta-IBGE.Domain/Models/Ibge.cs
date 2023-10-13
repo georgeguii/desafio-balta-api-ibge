@@ -4,7 +4,7 @@ namespace Desafio_Balta_IBGE.Domain.Models;
 
 public class Ibge : Entity
 {
-    public int IbgeId { get; set; }
+    public string IbgeId { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string State { get; set; } = string.Empty;
 
@@ -12,8 +12,9 @@ public class Ibge : Entity
     {
     }
 
-    public Ibge(string city, string state)
+    public Ibge(string ibgeId ,string city, string state)
     {
+        IbgeId = ibgeId;
         City = city;
         State = state;
     }

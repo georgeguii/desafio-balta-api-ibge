@@ -14,10 +14,18 @@ public sealed class IbgeMap : IEntityTypeConfiguration<Ibge>
 
         builder.HasKey(x => x.IbgeId);
 
-        builder.Property(x => x.State)
+        builder.Property(x => x.IbgeId)
+            .HasColumnName("IbgeId")
+            .HasColumnType("char(7)")
+            .IsRequired();
+
+        builder.Property(x => x.State)  
             .HasColumnName("State")
             .HasColumnType("char(2)")
-            .IsRequired();
+            .IsRequired()
+            // Sempre que salvar um novo valor no banco, será salvo em ToUpper, a segunda expression serve para mapear o retorno,
+            // mas como não ocorre nenhuma modificação, somente retorna
+            .HasConversion(state => state.ToUpper(), state => state);
 
         builder.Property(x => x.City)
             .HasColumnName("City")

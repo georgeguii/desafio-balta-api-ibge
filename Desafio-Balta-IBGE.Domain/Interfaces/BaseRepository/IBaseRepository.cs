@@ -5,7 +5,7 @@ namespace Desafio_Balta_IBGE.Domain.Interfaces.BaseRepository;
 public interface IBaseRepository<TEntity>
 {
     Task<IEnumerable<TEntity>> GetAsync();
-    ValueTask<TEntity?> GetByIdAsync(int id);
+    Task<IEnumerable<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> predicate);
     Task AddAsync(TEntity entity);
     void Update(TEntity entity);
     void Delete(TEntity entity);
