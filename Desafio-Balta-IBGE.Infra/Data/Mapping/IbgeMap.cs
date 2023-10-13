@@ -1,6 +1,7 @@
-﻿using Desafio_Balta_IBGE.Domain.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+using Desafio_Balta_IBGE.Domain.Models;
 
 namespace Desafio_Balta_IBGE.Infra.Data.Mapping;
 
@@ -29,7 +30,7 @@ public sealed class IbgeMap : IEntityTypeConfiguration<Ibge>
 
         builder.Property(x => x.City)
             .HasColumnName("City")
-            .HasColumnType("varchar(50)")
+            .HasColumnType("varchar(80)")
             .IsRequired();
 
     }
