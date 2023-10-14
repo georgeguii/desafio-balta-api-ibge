@@ -20,9 +20,9 @@ public sealed class UnitOfWork : IUnitOfWork
         _transaction = _context.Database.BeginTransaction();
     }
 
-    public async Task Commit()
+    public async Task Commit(CancellationToken cancellationToken)
     {
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
         _transaction?.Commit();
     }
 
