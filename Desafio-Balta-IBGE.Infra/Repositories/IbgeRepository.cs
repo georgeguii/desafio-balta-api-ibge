@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using Desafio_Balta_IBGE.Domain.Models;
-using Desafio_Balta_IBGE.Domain.Interfaces;
 using Desafio_Balta_IBGE.Infra.Data.Context;
+using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 
 namespace Desafio_Balta_IBGE.Infra.Repositories;
 

@@ -4,9 +4,9 @@ namespace Desafio_Balta_IBGE.Domain.Models;
 
 public class Ibge : Entity
 {
-    public string IbgeId { get; set; } = string.Empty;
-    public string City { get; set; } = string.Empty;
-    public string State { get; set; } = string.Empty;
+    public string IbgeId { get; private set; } = string.Empty;
+    public string City { get; private set; } = string.Empty;
+    public string State { get; private set; } = string.Empty;
 
     public Ibge()
     {
