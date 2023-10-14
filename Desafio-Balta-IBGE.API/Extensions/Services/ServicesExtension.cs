@@ -2,7 +2,7 @@
 
 using Desafio_Balta_IBGE.Infra.Data.Context;
 
-namespace Desafio_Balta_IBGE.API.Extensions;
+namespace Desafio_Balta_IBGE.API.Extensions.Services;
 
 public static class ServicesExtension
 {

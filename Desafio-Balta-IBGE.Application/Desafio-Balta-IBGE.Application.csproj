@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="MediatR" Version="12.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Desafio-Balta-IBGE.Domain\Desafio-Balta-IBGE.Domain.csproj" />
     <ProjectReference Include="..\Desafio-Balta-IBGE.Shared\Desafio-Balta-IBGE.Shared.csproj" />
   </ItemGroup>
