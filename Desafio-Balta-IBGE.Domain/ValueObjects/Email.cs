@@ -9,7 +9,7 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public Email(string address)
         {
             InvalidParametersException.ThrowIfNull(address, "Email inválido.");
-            Address = address;
+            Address = address.Trim();
         }
 
         public string Address { get; private set; }
@@ -18,10 +18,17 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public static implicit operator string(Email email) => email.ToString();
         public override string ToString() => Address.Trim();
         public static implicit operator Email(string endereco) => new Email(endereco);
+
         public void ResendCode()
         {
             VerifyEmail = new VerifyEmail();
             VerifyEmail.GenerateCode();
+        }
+
+        public void UpdateEmail(string email)
+        {
+            InvalidParametersException.ThrowIfNull(email, "Email inválido.");
+            Address = email;
         }
     }
 }

@@ -3,16 +3,10 @@ using FluentValidation;
 
 namespace Desafio_Balta_IBGE.Application.Validators.Users
 {
-    public class CreateUserValidator : AbstractValidator<CreateUserRequest>
+    public class LoginValidator : AbstractValidator<LoginRequest>
     {
-        public CreateUserValidator()
+        public LoginValidator()
         {
-            RuleFor(x => x.Name)
-                .NotEmpty()
-                    .WithMessage("Nome inválido.")
-                .Length(2, 60)
-                    .WithMessage("Nome deve ter entre 2 a 60 caracteres.");
-
             RuleFor(x => x.Email)
                 .NotEmpty()
                     .WithMessage("Email inválido.")
@@ -24,7 +18,6 @@ namespace Desafio_Balta_IBGE.Application.Validators.Users
                     .WithMessage("Senha inválido.")
                 .Matches(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
                     .WithMessage("A senha deve conter ao menos 8 dígitos, 1 letra, 1 caractere especial, 1 letra minuscula e 1 letra maiuscula.");
-
         }
     }
 }
