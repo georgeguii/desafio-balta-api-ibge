@@ -4,7 +4,9 @@ namespace Desafio_Balta_IBGE.Domain.Interfaces.UserRepository
 {
     public interface IUserRepository
     {
-        Task<bool> IsEmailRegistered(string email);
+        Task<User> GetByEmailAsync(string email);
+        Task<bool> IsEmailRegisteredAsync(string email);
+        Task<bool> ActivateAccount(User user);
         Task AddAsync(User user);
     }
 }

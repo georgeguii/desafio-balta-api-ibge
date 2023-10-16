@@ -23,29 +23,21 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
             InvalidParametersException.ThrowIfNull(code, "Código de ativação inválido. Por favor, verifique.");
 
             if (Code is null && ActivateDate != null)
-            {
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Essa conta já foi ativada.");
-            }
 
             if (Active)
-            {
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já foi utilizado.");
-            }
 
             if (ExpireDate < DateTime.Now)
-            {
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já expirou.");
-            }
 
             if (code.Trim() != Code?.Trim())
-            {
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Código informado não confere.");
-            }
 
             return new VerifyCodeResult(IsCodeValid: true, Message: string.Empty);
         }
 
-        public void Activate()
+        public void ActivateAccount()
         {
             ExpireDate = null;
             Code = null;

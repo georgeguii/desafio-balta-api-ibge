@@ -1,4 +1,5 @@
-﻿using Desafio_Balta_IBGE.Shared.Exceptions;
+﻿using Desafio_Balta_IBGE.Infra.Extensions;
+using Desafio_Balta_IBGE.Shared.Exceptions;
 using Desafio_Balta_IBGE.Shared.Result;
 using Desafio_Balta_IBGE.Shared.ValueObjects;
 
@@ -9,7 +10,7 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public Password(string hash)
         {
             InvalidParametersException.ThrowIfNull(hash, "Senha inválida.");
-            Hash = hash;
+            Hash = hash.Trim().Encrypt();
         }
 
         public string? Hash { get; private set; }
@@ -19,14 +20,10 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public bool Active => ActivateDate != null && ExpireDate == null;
 
         public bool Verify(string password, string hash)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, hash);
-        }
+            => BCrypt.Net.BCrypt.Verify(password, hash);
 
         public bool Verify(string hash)
-        {
-            return BCrypt.Net.BCrypt.Verify(hash, Hash);
-        }
+            => BCrypt.Net.BCrypt.Verify(hash, Hash);
 
         public void GenerateCode()
         {
@@ -38,24 +35,16 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public VerifyCodeResult VerifyCode(string code)
         {
             if (Code is null && ActivateDate != null)
-            {
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já foi verificado.");
-            }
 
             if (Active)
-            {
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já foi utilizado.");
-            }
 
             if (code.Trim() != Code?.Trim())
-            {
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Código informado não confere.");
-            }
 
             if (ExpireDate < DateTime.Now)
-            {
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já expirou.");
-            }
 
             InvalidParametersException.ThrowIfNull(code, "Código informado é inválido.");
 

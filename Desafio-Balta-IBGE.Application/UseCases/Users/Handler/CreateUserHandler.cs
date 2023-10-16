@@ -44,7 +44,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             {
                 #region Verificar se o E-mail está cadastrado
 
-                var emailCadastrado = await __userRepository.IsEmailRegistered(email: request.Email);
+                var emailCadastrado = await __userRepository.IsEmailRegisteredAsync(email: request.Email);
                 if (emailCadastrado)
                     return new CreateUserResponse(StatusCode: HttpStatusCode.BadRequest,
                                                  Message: "Este e-mail já está cadastrado.",

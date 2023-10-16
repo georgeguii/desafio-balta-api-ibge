@@ -18,8 +18,6 @@ namespace Desafio_Balta_IBGE.Application.Validators.Users
                     .WithMessage("Email inválido.")
                 .Matches(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
                     .WithMessage("Por favor, insira um endereço de e-mail válido.");
-            //.EmailAddress()
-            //    .WithMessage("Por favor, insira um endereço de e-mail válido.");
 
             RuleFor(x => x.Password)
                 .NotEmpty()

@@ -13,7 +13,7 @@ namespace Desafio_Balta_IBGE.Domain.Models
             InvalidParametersException.ThrowIfNull(password, "Senha inválida.");
             InvalidParametersException.ThrowIfNull(email, "Email inválido.");
 
-            Name = name;
+            Name = name.Trim();
             Password = password;
             Email = email;
         }
@@ -25,14 +25,10 @@ namespace Desafio_Balta_IBGE.Domain.Models
         public bool Active { get; private set; }
 
         public void Activate()
-        {
-            Active = true;
-        }
+            => Active = true;
 
         public void Inactive()
-        {
-            Active = false;
-        }
+            => Active = false;
 
         public void UpdateEmail(Email email)
         {

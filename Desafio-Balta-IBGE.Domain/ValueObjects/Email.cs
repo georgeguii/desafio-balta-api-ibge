@@ -9,7 +9,7 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public Email(string address)
         {
             InvalidParametersException.ThrowIfNull(address, "Email inválido.");
-            Address = address;
+            Address = address.Trim();
         }
 
         public string Address { get; private set; }
