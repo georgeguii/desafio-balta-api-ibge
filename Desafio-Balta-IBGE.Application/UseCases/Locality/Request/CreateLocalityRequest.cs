@@ -8,9 +8,9 @@ public class CreateLocalityRequest
 {
     public CreateLocalityRequest(string ibgeId, string city, string state)
     {
-        IbgeId = ibgeId;
-        City = city;
-        State = state;
+        IbgeId = ibgeId.Trim();
+        City = city.Trim();
+        State = state.Trim();
     }
 
     public string IbgeId { get; set; }
