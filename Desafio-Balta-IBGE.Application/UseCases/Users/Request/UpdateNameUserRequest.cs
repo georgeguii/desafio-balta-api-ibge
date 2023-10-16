@@ -4,22 +4,19 @@ using FluentValidation.Results;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Users.Request
 {
-    public class CreateUserRequest : IRequest
+    public class UpdateNameUserRequest : IRequest
     {
-        public CreateUserRequest(string name, string email, string password)
+        public UpdateNameUserRequest(int userId, string name)
         {
-            Name = name.Trim();
-            Email = email.Trim();
-            Password = password.Trim();
+            UserId = userId;
+            Name = name;
         }
-
+        public int UserId { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; } 
 
         public ValidationResult Validar()
         {
-            var validator = new CreateUserValidator();
+            var validator = new UpdateUserValidator();
             return validator.Validate(this);
         }
     }

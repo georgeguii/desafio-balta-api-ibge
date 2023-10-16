@@ -1,11 +1,6 @@
 ﻿using Desafio_Balta_IBGE.Application.UseCases.Users.Handler;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Desafio_Balta_IBGE.Tests.Users
 {

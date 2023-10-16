@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Desafio-Balta-IBGE.Application\Desafio-Balta-IBGE.Application.csproj" />
     <ProjectReference Include="..\Desafio-Balta-IBGE.Domain\Desafio-Balta-IBGE.Domain.csproj" />
   </ItemGroup>
 
