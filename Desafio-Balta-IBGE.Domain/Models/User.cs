@@ -7,7 +7,7 @@ namespace Desafio_Balta_IBGE.Domain.Models
     public sealed class User : Entity
     {
         public User() {}
-        public User(string name, Password password, string email)
+        public User(string name, Password password, Email email)
         {
             InvalidParametersException.ThrowIfNull(name, "Nome inválido.");
             InvalidParametersException.ThrowIfNull(password, "Senha inválida.");
@@ -22,6 +22,17 @@ namespace Desafio_Balta_IBGE.Domain.Models
         public string Name { get; private set; }
         public Password Password { get; private set; }
         public Email Email { get; private set; }
+        public bool Active { get; private set; }
+
+        public void Activate()
+        {
+            Active = true;
+        }
+
+        public void Inactive()
+        {
+            Active = false;
+        }
 
         public void UpdateEmail(Email email)
         {

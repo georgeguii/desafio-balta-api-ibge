@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Desafio-Balta-IBGE.Shared\Desafio-Balta-IBGE.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validators\Users\" />
-  </ItemGroup>
-
 </Project>

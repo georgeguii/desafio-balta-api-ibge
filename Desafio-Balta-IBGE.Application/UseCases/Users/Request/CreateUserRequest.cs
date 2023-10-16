@@ -1,11 +1,10 @@
-﻿using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
-using Desafio_Balta_IBGE.Domain.Validators.Users;
+﻿using Desafio_Balta_IBGE.Application.Validators.Users;
+using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 using FluentValidation.Results;
-using MediatR;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Users.Request
 {
-    public class CreateUserRequest : IRequest<CreateUserResponse>
+    public class CreateUserRequest : IRequest
     {
         public CreateUserRequest(string name, string email, string password)
         {
