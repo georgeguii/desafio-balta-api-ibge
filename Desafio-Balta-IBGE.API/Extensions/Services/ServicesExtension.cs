@@ -41,6 +41,10 @@ public static class ServicesExtension
 
         builder.Services.AddScoped<ICreateUserHandler, CreateUserHandler>();
         builder.Services.AddScoped<IActivateUserHandler, ActivateUserHandler>();
+        builder.Services.AddScoped<IDeleteUserHandler, DeleteUserHandler>();
+        builder.Services.AddScoped<IUpdateNameUserHandler, UpdateNameUserHandler>();
+        builder.Services.AddScoped<IUpdateEmailHandler, UpdateEmailHandler>();
+        builder.Services.AddScoped<IUpdatePasswordUserHandler, UpdatePasswordUserHandler>();
 
         #endregion
 

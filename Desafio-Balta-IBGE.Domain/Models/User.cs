@@ -22,24 +22,13 @@ namespace Desafio_Balta_IBGE.Domain.Models
         public string Name { get; private set; }
         public Password Password { get; private set; }
         public Email Email { get; private set; }
-        public bool Active { get; private set; }
 
-        public void Activate()
-            => Active = true;
-
-        public void Inactive()
-            => Active = false;
-
-        public void UpdateEmail(Email email)
+        public void UpdateName(string name)
         {
-            InvalidParametersException.ThrowIfNull(email, "Email inválido.");
-            Email = email;
+            InvalidParametersException.ThrowIfNull(name, "Nome inválido.");
+            Name = name;
         }
 
-        public void UpdatePassword(Password password)
-        {
-            InvalidParametersException.ThrowIfNull(password, "Email inválido.");
-            Password = password;
-        }
+        
     }
 }

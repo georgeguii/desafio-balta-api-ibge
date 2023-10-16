@@ -30,21 +30,67 @@ namespace Desafio_Balta_IBGE.Infra.Repositories
                                             .SetProperty(x => x.Email.VerifyEmail.ActivateDate, user.Email.VerifyEmail.ActivateDate)
                                             .SetProperty(x => x.Email.VerifyEmail.Code, user.Email.VerifyEmail.Code));
 
-            if (activated == 0)
-            {
-                return false;
-            }
-            return true;
+           
+            return activated != 0;
         }
 
+        public async Task<bool> UpdateNameAsync(int id, User user)
+        {
+            var updated = await __context
+                    .User
+                    .Where(x => x.UserId == id)
+                    .ExecuteUpdateAsync(x =>
+                                    x.SetProperty(x => x.Name, user.Name));
+
+            return updated != 0;
+        }
+
+        public async Task<bool> UpdateEmailAsync(User user)
+        {
+            var updated = __context
+                .User
+                .Where(x => x.UserId == user.UserId)
+                .ExecuteUpdate(x => x.SetProperty(x => x.Email.Address, user.Email.Address));
+
+            return updated != 0;
+        }
+
+        public async Task<bool> UpdatePasswordAsync(User user)
+        {
+            var updated = __context
+                .User
+                .Where(x => x.UserId == user.UserId)
+                .ExecuteUpdate(x =>
+                                x.SetProperty(x => x.Password.Hash, user.Password.Hash));
+
+            return updated != 0;
+        }
+
+        public async Task<bool> RemoveAsync(User user)
+        {
+            var deleted = await __context
+                                .User
+                                .Where(x => x.UserId == user.UserId)
+                                .ExecuteDeleteAsync();
+
+            return deleted != 0;
+        }
+
+        public async Task<User> GetByIdAsync(int id)
+        => await __context
+                 .User
+                 .FirstOrDefaultAsync(x => x.UserId == id);
+
         public async Task<User> GetByEmailAsync(string email)
-            => await __context
-                  .User
-                  .FirstOrDefaultAsync(x => x.Email.Address == email);
+           => await __context
+                 .User
+                 .FirstOrDefaultAsync(x => x.Email.Address == email);
 
         public async Task<bool> IsEmailRegisteredAsync(string email)
             => await __context
                     .User
                     .AnyAsync(x => x.Email.Address == email);
+
+        
     }
 }

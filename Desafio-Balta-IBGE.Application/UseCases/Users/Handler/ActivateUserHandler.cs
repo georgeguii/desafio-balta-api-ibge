@@ -65,12 +65,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 #region Ativa a conta
 
-                if (userDB.Active)
-                    return new ActivateUserResponse(StatusCode: HttpStatusCode.BadRequest,
-                                                    Message: "Este usuário já está ativo.");
-
                 userDB.Email.VerifyEmail.ActivateAccount();
-                userDB.Activate();
 
                 var activated = await __userRepository.ActivateAccount(userDB);
                 if (activated == false)

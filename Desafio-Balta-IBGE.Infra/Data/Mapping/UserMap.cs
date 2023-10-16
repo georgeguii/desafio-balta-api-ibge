@@ -93,13 +93,6 @@ namespace Desafio_Balta_IBGE.Infra.Data.Mapping
                 .Ignore(x => x.Active);
 
             #endregion
-
-            #region Active
-            builder.Property(x => x.Active)
-                .HasColumnName("Active")
-                .HasColumnType("bit")
-                .IsRequired(true);
-            #endregion
         }
     }
 }

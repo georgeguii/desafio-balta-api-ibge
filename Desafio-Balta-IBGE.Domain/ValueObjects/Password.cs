@@ -50,5 +50,11 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
 
             return new VerifyCodeResult(IsCodeValid: true, Message: string.Empty);
         }
+
+        public void UpdatePassword(string password)
+        {
+            InvalidParametersException.ThrowIfNull(password, "Senha inválida.");
+            Hash = password.Trim().Encrypt();
+        }
     }
 }

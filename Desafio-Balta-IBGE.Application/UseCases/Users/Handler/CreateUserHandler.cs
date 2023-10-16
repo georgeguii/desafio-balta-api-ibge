@@ -55,10 +55,9 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
                 #region Adiciona o usuário
 
                 var user = new User(name: request.Name,
-                                email: new Email(request.Email),
-                                password: new Password(request.Password));
+                                    email: new Email(request.Email),
+                                    password: new Password(request.Password));
 
-                user.Inactive();
                 user.Email.VerifyEmail.GenerateCode();
 
                 __unitOfWork.BeginTransaction();
@@ -75,7 +74,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 #endregion
 
-                return new CreateUserResponse(StatusCode: HttpStatusCode.OK,
+                return new CreateUserResponse(StatusCode: HttpStatusCode.Created,
                                             Message: "Usuário criado com sucesso. Por favor, verifique seu e-mail para ativar sua conta.",
                                             Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
                 
