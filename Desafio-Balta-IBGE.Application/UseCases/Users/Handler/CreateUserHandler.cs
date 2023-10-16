@@ -46,7 +46,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 var emailCadastrado = await __userRepository.IsEmailRegisteredAsync(email: request.Email);
                 if (emailCadastrado)
-                    return new CreateUserResponse(StatusCode: HttpStatusCode.BadRequest,
+                    return new CreateUserResponse(StatusCode: HttpStatusCode.Conflict,
                                                  Message: "Este e-mail já está cadastrado.",
                                                  Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
 

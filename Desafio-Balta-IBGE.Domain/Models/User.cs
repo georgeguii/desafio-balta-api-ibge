@@ -22,6 +22,7 @@ namespace Desafio_Balta_IBGE.Domain.Models
         public string Name { get; private set; }
         public Password Password { get; private set; }
         public Email Email { get; private set; }
+        public string Perfil { get; private set; }
 
         public void UpdateName(string name)
         {

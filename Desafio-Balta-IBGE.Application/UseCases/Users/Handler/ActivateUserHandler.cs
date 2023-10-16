@@ -1,11 +1,9 @@
 ﻿using Desafio_Balta_IBGE.Application.Abstractions;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
-using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 using Desafio_Balta_IBGE.Domain.Interfaces.Services;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
 using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
-using Desafio_Balta_IBGE.Domain.Models;
 using System.Net;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler

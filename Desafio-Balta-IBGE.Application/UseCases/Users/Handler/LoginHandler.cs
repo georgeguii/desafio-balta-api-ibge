@@ -7,21 +7,22 @@ using System.Net;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 {
-    public class DeleteUserHandler : IDeleteUserHandler
+    public class LoginHandler : ILoginHandler
     {
         private readonly IUserRepository __userRepository;
         private readonly IUnitOfWork __unitOfWork;
-        public DeleteUserHandler()
+
+        public LoginHandler()
         {
             
         }
-        public DeleteUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public LoginHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             __userRepository = userRepository;
             __unitOfWork = unitOfWork;
         }
 
-        public async Task<DeleteUserResponse> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
+        public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
             #region Validações
 
@@ -29,7 +30,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
             if (!result.IsValid)
 
-                return new DeleteUserResponse(StatusCode: HttpStatusCode.BadRequest,
+                return new LoginResponse(StatusCode: HttpStatusCode.BadRequest,
                                              Message: "Requisição inválida. Por favor, valide os dados informados.",
                                              Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
 
@@ -39,28 +40,36 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             {
                 #region Buscar usuário
 
-                var userDB = await __userRepository.GetByIdAsync(request.UserId);
+                var userDB = await __userRepository.GetByEmailAsync(request.Email);
                 if (userDB is null)
-                    return new DeleteUserResponse(StatusCode: HttpStatusCode.NotFound,
+                    return new LoginResponse(StatusCode: HttpStatusCode.BadRequest,
                                              Message: "Usuário informado não está cadastrado.");
 
                 #endregion
 
-                #region Excluir usuário
+                #region Verifica se a conta está ativa
 
-                __unitOfWork.BeginTransaction();
-
-                var deleted = await __userRepository.RemoveAsync(userDB);
-                if (deleted == false)
-                    return new DeleteUserResponse(StatusCode: HttpStatusCode.InternalServerError,
-                                             Message: "Houve uma falha na exclusão do usuário. Por favor, tente novamente mais tarde.");
-
-                await __unitOfWork.Commit(cancellationToken);
+                if (!userDB.Email.VerifyEmail.Active)
+                    return new LoginResponse(StatusCode: HttpStatusCode.BadRequest,
+                                             Message: "Conta ainda não foi verificada. Por favor, verifique sua conta para ativa-la.");
 
                 #endregion
 
-                return new DeleteUserResponse(StatusCode: HttpStatusCode.OK,
-                                             Message: $"{userDB.Name} excluído com sucesso.");
+                #region Valida senha
+
+                if (!userDB.Password.Verify(request.Password, userDB.Password.Hash!))
+                    return new LoginResponse(StatusCode: HttpStatusCode.BadRequest,
+                                             Message: "Senha inválida.");
+
+                #endregion
+
+                #region Gera o token e response do usuário autenticado
+                var response = new LoginResponse(StatusCode: HttpStatusCode.OK,
+                                                Message: $"{userDB.Name} autenticado com sucesso!",
+                                                token: "");
+                #endregion
+
+                return response;
             }
             catch (Exception)
             {
