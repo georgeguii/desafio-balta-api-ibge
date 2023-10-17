@@ -42,7 +42,7 @@ namespace Desafio_Balta_IBGE.Infra.Services
             claimsIdentity.AddClaim(new Claim("Id", user.Id.ToString()));
             claimsIdentity.AddClaim(new Claim(ClaimTypes.GivenName, user.Email));
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
-            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, user.Perfil));
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
 
             return claimsIdentity;
         }

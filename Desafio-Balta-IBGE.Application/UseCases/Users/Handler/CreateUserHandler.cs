@@ -1,6 +1,7 @@
 ﻿using Desafio_Balta_IBGE.Application.Abstractions;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
+using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 using Desafio_Balta_IBGE.Domain.Interfaces.Services;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
 using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
@@ -52,32 +53,12 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 #endregion
 
-                #region Adiciona o usuário
-
-                var user = new User(name: request.Name,
-                                    email: new Email(request.Email),
-                                    password: new Password(request.Password));
-
-                user.Email.VerifyEmail.GenerateCode();
-
-                __unitOfWork.BeginTransaction();
-
-                await __userRepository.AddAsync(user);
-
-                await __unitOfWork.Commit(cancellationToken);
-
-                #endregion
-
-                #region Envia E-mail com código de verificação
-
-                await __emailServices.SendVerificationEmail(user);
-
-                #endregion
+                await AddUser(request, cancellationToken);
 
                 return new CreateUserResponse(StatusCode: HttpStatusCode.Created,
                                             Message: "Usuário criado com sucesso. Por favor, verifique seu e-mail para ativar sua conta.",
                                             Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
-                
+
             }
             catch (Exception)
             {
@@ -88,10 +69,26 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             {
                 __unitOfWork.Dispose();
             }
-
-            
-
-
         }
+
+        private async Task AddUser(CreateUserRequest request, CancellationToken cancellationToken)
+        {
+            var user = new User(name: request.Name,
+                                                email: new Email(request.Email),
+                                                password: new Password(request.Password));
+
+            user.Email.VerifyEmail.GenerateCode();
+
+            __unitOfWork.BeginTransaction();
+
+            await __userRepository.AddAsync(user);
+
+            //await SendEmail(user);
+
+            await __unitOfWork.Commit(cancellationToken);
+        }
+
+        private async Task SendEmail(User user)
+            => await __emailServices.SendVerificationMail(user);
     }
 }

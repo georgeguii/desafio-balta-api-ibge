@@ -45,6 +45,7 @@ public static class ServicesExtension
         builder.Services.AddScoped<IUpdateNameUserHandler, UpdateNameUserHandler>();
         builder.Services.AddScoped<IUpdateEmailHandler, UpdateEmailHandler>();
         builder.Services.AddScoped<IUpdatePasswordUserHandler, UpdatePasswordUserHandler>();
+        builder.Services.AddScoped<ILoginHandler, LoginHandler>();
 
         #endregion
 

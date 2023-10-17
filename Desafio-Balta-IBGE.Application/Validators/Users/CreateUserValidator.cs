@@ -25,6 +25,10 @@ namespace Desafio_Balta_IBGE.Application.Validators.Users
                 .Matches(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
                     .WithMessage("A senha deve conter ao menos 8 dígitos, 1 letra, 1 caractere especial, 1 letra minuscula e 1 letra maiuscula.");
 
+            RuleFor(x => x.Role)
+                .NotEmpty()
+                    .WithMessage("Perfil inválido.");
+
         }
     }
 }
