@@ -93,6 +93,11 @@ namespace Desafio_Balta_IBGE.Infra.Data.Mapping
                 .Ignore(x => x.Active);
 
             #endregion
+
+            builder.Property(x => x.Role)
+                .HasColumnName("Role")
+                .HasColumnType("varchar")
+                .IsRequired(true);
         }
     }
 }

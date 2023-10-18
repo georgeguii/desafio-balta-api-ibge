@@ -1,5 +1,5 @@
-﻿using Desafio_Balta_IBGE.Infra.Extensions;
-using Desafio_Balta_IBGE.Shared.Exceptions;
+﻿using Desafio_Balta_IBGE.Shared.Exceptions;
+using Desafio_Balta_IBGE.Shared.Extensions;
 using Desafio_Balta_IBGE.Shared.Result;
 using Desafio_Balta_IBGE.Shared.ValueObjects;
 
@@ -7,6 +7,10 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
 {
     public sealed class Password : ValueObject
     {
+        public Password()
+        {
+
+        }
         public Password(string hash)
         {
             InvalidParametersException.ThrowIfNull(hash, "Senha inválida.");
@@ -19,18 +23,15 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public DateTime? ActivateDate { get; private set; } = null;
         public bool Active => ActivateDate != null && ExpireDate == null;
 
-        public bool Verify(string password, string hash)
-            => BCrypt.Net.BCrypt.Verify(password, hash);
-
-        public bool Verify(string hash)
-            => BCrypt.Net.BCrypt.Verify(hash, Hash);
-
         public void GenerateCode()
         {
             Code = Guid.NewGuid().ToString("N")[..8].ToUpper();
             ExpireDate = DateTime.Now.AddMinutes(5);
             ActivateDate = null;
         }
+
+        public bool Verify(string password)
+            => Criptography.CompareHash(password, Hash);
 
         public VerifyCodeResult VerifyCode(string code)
         {

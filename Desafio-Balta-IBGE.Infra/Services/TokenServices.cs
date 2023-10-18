@@ -1,4 +1,4 @@
-﻿using Desafio_Balta_IBGE.Domain.Interfaces;
+﻿using Desafio_Balta_IBGE.Application.Abstractions;
 using Desafio_Balta_IBGE.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -11,10 +11,16 @@ namespace Desafio_Balta_IBGE.Infra.Services
     public class TokenServices : ITokenServices
     {
         private readonly IConfiguration __configuration;
+
+        public TokenServices(IConfiguration configuration)
+        {
+            __configuration = configuration;
+        }
+
         public string GerarToken(User user)
         {
             var handler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(__configuration["Secrets:JwtPrivateKey"]);
+            var key = Encoding.UTF8.GetBytes(__configuration["Secrets:JwtPrivateKey"]);
             var credentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature);
@@ -42,7 +48,7 @@ namespace Desafio_Balta_IBGE.Infra.Services
             claimsIdentity.AddClaim(new Claim("Id", user.Id.ToString()));
             claimsIdentity.AddClaim(new Claim(ClaimTypes.GivenName, user.Email));
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
-            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, user.Perfil));
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
 
             return claimsIdentity;
         }

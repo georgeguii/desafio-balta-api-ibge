@@ -1,7 +1,6 @@
 ﻿using Desafio_Balta_IBGE.Application.Abstractions;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
-using Desafio_Balta_IBGE.Domain.Interfaces.Services;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
 using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
 using Desafio_Balta_IBGE.Domain.Models;
@@ -14,17 +13,15 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
     {
         private readonly IUserRepository __userRepository;
         private readonly IUnitOfWork __unitOfWork;
-        private readonly IEmailServices __emailServices;
 
         public CreateUserHandler()
         {
             
         }
-        public CreateUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, IEmailServices emailServices)
+        public CreateUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             __userRepository = userRepository;
             __unitOfWork = unitOfWork;
-            __emailServices = emailServices;
         }
         public async Task<CreateUserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
         {
@@ -52,32 +49,8 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 #endregion
 
-                #region Adiciona o usuário
+                return await AddUser(request, cancellationToken);
 
-                var user = new User(name: request.Name,
-                                    email: new Email(request.Email),
-                                    password: new Password(request.Password));
-
-                user.Email.VerifyEmail.GenerateCode();
-
-                __unitOfWork.BeginTransaction();
-
-                await __userRepository.AddAsync(user);
-
-                await __unitOfWork.Commit(cancellationToken);
-
-                #endregion
-
-                #region Envia E-mail com código de verificação
-
-                await __emailServices.SendVerificationEmail(user);
-
-                #endregion
-
-                return new CreateUserResponse(StatusCode: HttpStatusCode.Created,
-                                            Message: "Usuário criado com sucesso. Por favor, verifique seu e-mail para ativar sua conta.",
-                                            Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
-                
             }
             catch (Exception)
             {
@@ -88,10 +61,28 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             {
                 __unitOfWork.Dispose();
             }
-
-            
-
-
         }
+
+        private async Task<CreateUserResponse> AddUser(CreateUserRequest request, CancellationToken cancellationToken)
+        {
+            var user = new User(name: request.Name,
+                                                email: new Email(request.Email),
+                                                password: new Password(request.Password),
+                                                role: "Administrador");
+
+            user.Email.VerifyEmail.GenerateCode();
+
+            __unitOfWork.BeginTransaction();
+
+            await __userRepository.AddAsync(user);
+
+            await __unitOfWork.Commit(cancellationToken);
+
+            return new CreateUserResponse(StatusCode: HttpStatusCode.Created,
+                                          Message: "Usuário criado com sucesso. Por favor, verifique seu e-mail para ativar sua conta.",
+                                          ActivationCode: user.Email.VerifyEmail.Code!,
+                                          ExpireDate: user.Email.VerifyEmail.ExpireDate.ToString()!);
+        }
+
     }
 }
