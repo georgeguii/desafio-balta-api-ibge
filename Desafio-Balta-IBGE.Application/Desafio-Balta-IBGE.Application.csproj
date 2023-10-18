@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.7.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-    <PackageReference Include="SecureIdentity" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
