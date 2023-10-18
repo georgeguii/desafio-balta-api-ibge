@@ -9,10 +9,14 @@ public class IbgeRepository : BaseRepository<Ibge>, IIbgeRepository
 {
     public IbgeRepository(IbgeContext context) : base(context) { }
 
+    public async Task<bool> IsIbgeCodeRegisteredAsync(string ibgeId)
+        => await _dbSet.AnyAsync(x => x.IbgeId.Equals(ibgeId));
+
+    public async Task<Ibge> GetByIdAsync(string id)
+        => await _dbSet.SingleOrDefaultAsync(x => x.IbgeId.Contains(id));
+
     public async Task<Ibge> GetByCityAsync(string city)
-        => await _dbSet.FirstOrDefaultAsync(x => x.City.Contains(city));
+        => await _dbSet.SingleOrDefaultAsync(x => x.City.Contains(city));
 
 
-    public async Task<Ibge> GetByStateAsync(string state)
-        => await _dbSet.FirstOrDefaultAsync(x => x.State.Contains(state));
 }

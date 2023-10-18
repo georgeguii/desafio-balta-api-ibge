@@ -36,7 +36,7 @@ public static class ServicesExtension
 
         #endregion
 
-        #region Handlers
+        #region User Handlers
 
         builder.Services.AddScoped<ICreateUserHandler, CreateUserHandler>();
         builder.Services.AddScoped<IActivateUserHandler, ActivateUserHandler>();
