@@ -2,7 +2,6 @@
 using Desafio_Balta_IBGE.Domain.Models;
 using Desafio_Balta_IBGE.Infra.Data.Context;
 using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
-using Azure.Core;
 
 namespace Desafio_Balta_IBGE.Infra.Repositories;
 
@@ -13,12 +12,15 @@ public class IbgeRepository : BaseRepository<Ibge>, IIbgeRepository
     public async Task<bool> IsIbgeCodeRegisteredAsync(string ibgeId)
         => await _dbSet.AnyAsync(x => x.IbgeId.Equals(ibgeId));
 
+    public async Task<Ibge> GetByIdAsync(string id)
+        => await _dbSet.SingleOrDefaultAsync(x => x.IbgeId.Contains(id));
+
     public async Task<Ibge> GetByCityAsync(string city)
-        => await _dbSet.FirstOrDefaultAsync(x => x.City.Contains(city));
+        => await _dbSet.SingleOrDefaultAsync(x => x.City.Contains(city));
 
 
-    public async Task<Ibge> GetByStateAsync(string state)
-        => await _dbSet.FirstOrDefaultAsync(x => x.State.Contains(state));
+    public async Task<IEnumerable<Ibge>> GetByStateAsync(string state)
+        => await _dbSet.Where(x => x.State.Contains(state)).ToListAsync();
 
 
 }
