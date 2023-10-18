@@ -24,16 +24,17 @@ public static class ServicesExtension
 
     public static void AddDependencies(this WebApplicationBuilder builder)
     {
-        #region BaseRepository
+        #region Repository
 
         builder.Services.AddScoped(serviceType: typeof(IBaseRepository<>), implementationType: typeof(BaseRepository<>));
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         #endregion
 
-        #region User
+        #region Login
 
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<ILoginHandler, LoginHandler>();
 
         #endregion
 
@@ -45,13 +46,13 @@ public static class ServicesExtension
         builder.Services.AddScoped<IUpdateNameUserHandler, UpdateNameUserHandler>();
         builder.Services.AddScoped<IUpdateEmailHandler, UpdateEmailHandler>();
         builder.Services.AddScoped<IUpdatePasswordUserHandler, UpdatePasswordUserHandler>();
-        builder.Services.AddScoped<ILoginHandler, LoginHandler>();
 
         #endregion
 
         #region Services
 
         builder.Services.AddScoped<IEmailServices, EmailServices>();
+        builder.Services.AddScoped<ITokenServices, TokenServices>();
 
         #endregion
     }

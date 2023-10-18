@@ -13,7 +13,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            var request = new CreateUserRequest(name, email, password, (string)null);
+            var request = new CreateUserRequest(name, email, password);
             var handler = new CreateUserHandler();
 
             #endregion
@@ -83,7 +83,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            var request = new CreateUserRequest("Nome Ficticio", email, "@Admin123", (string)null);
+            var request = new CreateUserRequest("Nome Ficticio", email, "@Admin123");
             var handler = new CreateUserHandler();
 
             #endregion
@@ -122,7 +122,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            var request = new CreateUserRequest("Nome Ficticio", email, "@Admin123", (string)null);
+            var request = new CreateUserRequest("Nome Ficticio", email, "@Admin123");
             var handler = new CreateUserHandler();
 
             #endregion

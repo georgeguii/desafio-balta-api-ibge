@@ -53,11 +53,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 #endregion
 
-                await AddUser(request, cancellationToken);
-
-                return new CreateUserResponse(StatusCode: HttpStatusCode.Created,
-                                            Message: "Usuário criado com sucesso. Por favor, verifique seu e-mail para ativar sua conta.",
-                                            Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                return await AddUser(request, cancellationToken);
 
             }
             catch (Exception)
@@ -71,11 +67,12 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             }
         }
 
-        private async Task AddUser(CreateUserRequest request, CancellationToken cancellationToken)
+        private async Task<CreateUserResponse> AddUser(CreateUserRequest request, CancellationToken cancellationToken)
         {
             var user = new User(name: request.Name,
                                                 email: new Email(request.Email),
-                                                password: new Password(request.Password));
+                                                password: new Password(request.Password),
+                                                role: "Administrador");
 
             user.Email.VerifyEmail.GenerateCode();
 
@@ -83,9 +80,12 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
             await __userRepository.AddAsync(user);
 
-            //await SendEmail(user);
-
             await __unitOfWork.Commit(cancellationToken);
+
+            return new CreateUserResponse(StatusCode: HttpStatusCode.Created,
+                                          Message: "Usuário criado com sucesso. Por favor, verifique seu e-mail para ativar sua conta.",
+                                          ActivationCode: user.Email.VerifyEmail.Code!,
+                                          ExpireDate: user.Email.VerifyEmail.ExpireDate.ToString()!);
         }
 
         private async Task SendEmail(User user)

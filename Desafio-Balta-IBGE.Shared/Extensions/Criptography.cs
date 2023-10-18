@@ -1,4 +1,4 @@
-﻿namespace Desafio_Balta_IBGE.Infra.Extensions
+﻿namespace Desafio_Balta_IBGE.Shared.Extensions
 {
     public static class Criptography
     {
@@ -10,7 +10,15 @@
             return senhaCriptografada;
         }
 
-        public static bool CompareHash(this string password, string hash)
+        public static string Encrypt2(string password)
+        {
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            var senhaCriptografada = BCrypt.Net.BCrypt.HashPassword(password, salt);
+
+            return senhaCriptografada;
+        }
+
+        public static bool CompareHash(string password, string hash)
         {
             return BCrypt.Net.BCrypt.Verify(password, hash);
         }

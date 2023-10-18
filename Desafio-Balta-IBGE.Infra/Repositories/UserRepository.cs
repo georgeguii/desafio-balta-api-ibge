@@ -82,9 +82,17 @@ namespace Desafio_Balta_IBGE.Infra.Repositories
                  .FirstOrDefaultAsync(x => x.UserId == id);
 
         public async Task<User> GetByEmailAsync(string email)
-           => await __context
-                 .User
-                 .FirstOrDefaultAsync(x => x.Email.Address == email);
+        {
+            var result = await __context
+                         .User
+                         .FirstOrDefaultAsync(x => x.Email.Address == email);
+
+            if (result is null)
+            {
+                return null;
+            }
+            return result;
+        }
 
         public async Task<bool> IsEmailRegisteredAsync(string email)
             => await __context

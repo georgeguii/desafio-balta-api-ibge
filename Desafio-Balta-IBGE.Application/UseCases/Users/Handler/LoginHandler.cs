@@ -11,15 +11,17 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
     {
         private readonly IUserRepository __userRepository;
         private readonly IUnitOfWork __unitOfWork;
+        private readonly ITokenServices __tokenServices;
 
         public LoginHandler()
         {
             
         }
-        public LoginHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public LoginHandler(IUserRepository userRepository, IUnitOfWork unitOfWork, ITokenServices tokenServices)
         {
             __userRepository = userRepository;
             __unitOfWork = unitOfWork;
+            __tokenServices = tokenServices;
         }
 
         public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
@@ -57,16 +59,20 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 #region Valida senha
 
-                if (!userDB.Password.Verify(request.Password, userDB.Password.Hash!))
+                var isEquals = userDB.Password.Verify(request.Password);
+                if (!isEquals)
+                {
                     return new LoginResponse(StatusCode: HttpStatusCode.BadRequest,
                                              Message: "Senha inválida.");
+                }
 
                 #endregion
 
                 #region Gera o token e response do usuário autenticado
+                var token = __tokenServices.GerarToken(userDB);
                 var response = new LoginResponse(StatusCode: HttpStatusCode.OK,
                                                 Message: $"{userDB.Name} autenticado com sucesso!",
-                                                token: "");
+                                                token: token);
                 #endregion
 
                 return response;
