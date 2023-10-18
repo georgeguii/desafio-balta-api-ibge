@@ -1,14 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-using Desafio_Balta_IBGE.Infra.Data.Context;
-using Desafio_Balta_IBGE.Application.Abstractions;
+﻿using Desafio_Balta_IBGE.Application.Abstractions;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Handler;
-using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
-using Desafio_Balta_IBGE.Infra.Repositories;
-using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
 using Desafio_Balta_IBGE.Domain.Interfaces.BaseRepository;
-using Desafio_Balta_IBGE.Domain.Interfaces.Services;
+using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
+using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
+using Desafio_Balta_IBGE.Infra.Data.Context;
+using Desafio_Balta_IBGE.Infra.Repositories;
 using Desafio_Balta_IBGE.Infra.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Desafio_Balta_IBGE.API.Extensions.Services;
 
@@ -51,7 +49,6 @@ public static class ServicesExtension
 
         #region Services
 
-        builder.Services.AddScoped<IEmailServices, EmailServices>();
         builder.Services.AddScoped<ITokenServices, TokenServices>();
 
         #endregion
