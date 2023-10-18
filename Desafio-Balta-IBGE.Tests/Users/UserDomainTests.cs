@@ -36,7 +36,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            __user = new User(name: null, password: null, email: null);
+            __user = new User(name: null, password: null, email: null, role: null);
 
             #endregion
 
@@ -53,7 +53,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            __user = new User(name: null, password: new Password(null), email: new Email(null));
+            __user = new User(name: null, password: new Password(null), email: new Email(null), role: null);
 
             #endregion
 
@@ -70,7 +70,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            __user = new User(name: "Nome", password: null, email: new Email("Email"));
+            __user = new User(name: "Nome", password: null, email: new Email("Email"), role: null);
 
             #endregion
 
@@ -87,7 +87,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            __user = new User(name: "Nome", password: new Password(null), email: new Email("Email"));
+            __user = new User(name: "Nome", password: new Password(null), email: new Email("Email"), role: null);
 
             #endregion
 
@@ -104,7 +104,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            __user = new User(name: "Nome", password: new Password("Senha"), email: null);
+            __user = new User(name: "Nome", password: new Password("Senha"), email: null, role: null);
 
             #endregion
 
@@ -121,7 +121,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         {
             #region Arrange
 
-            __user = new User(name: "Nome", password: new Password("Senha"), email: new Email(null));
+            __user = new User(name: "Nome", password: new Password("Senha"), email: new Email(null), role: null);
 
             #endregion
 
