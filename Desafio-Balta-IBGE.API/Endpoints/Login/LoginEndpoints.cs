@@ -15,8 +15,8 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Login
             {
                 var response = await handler.Handle(request, cancellationToken);
 
-                if (response.StatusCode == HttpStatusCode.Conflict)
-                    return Results.Conflict(response);
+                if (response.StatusCode == HttpStatusCode.BadRequest)
+                    return Results.BadRequest(response);
 
                 return Results.Ok(response);
             });
