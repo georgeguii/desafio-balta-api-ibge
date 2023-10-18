@@ -19,8 +19,4 @@ public class IbgeRepository : BaseRepository<Ibge>, IIbgeRepository
         => await _dbSet.SingleOrDefaultAsync(x => x.City.Contains(city));
 
 
-    public async Task<IEnumerable<Ibge>> GetByStateAsync(string state)
-        => await _dbSet.Where(x => x.State.Contains(state)).ToListAsync();
-
-
 }

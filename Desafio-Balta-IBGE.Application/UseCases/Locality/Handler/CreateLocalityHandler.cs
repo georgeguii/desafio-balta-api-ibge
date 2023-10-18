@@ -21,7 +21,6 @@ public class CreateLocalityHandler
     public async Task<CreateLocalityResponse> Handle(CreateLocalityRequest request, CancellationToken cancellationToken)
     {
         #region Validações de entrada 
-
         var result = request.Validar();
 
         if (!result.IsValid)
