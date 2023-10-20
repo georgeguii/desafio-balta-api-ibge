@@ -1,5 +1,7 @@
 ﻿using Desafio_Balta_IBGE.Shared.Exceptions;
 using Desafio_Balta_IBGE.Shared.ValueObjects;
+using Desafio_Balta_IBGE.Shared.Extensions;
+using Desafio_Balta_IBGE.Domain.Atributes;
 
 namespace Desafio_Balta_IBGE.Domain.ValueObjects
 {
@@ -8,10 +10,11 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public Email() { }
         public Email(string address)
         {
-            InvalidParametersException.ThrowIfNull(address, "Email inválido.");
             Address = address.Trim();
+            //this.CheckPropertiesIsNull();
         }
 
+        [IfNull(ErrorMessage = "Email inválido.")]
         public string Address { get; private set; }
         public VerifyEmail VerifyEmail { get; private set; } = new VerifyEmail();
 
@@ -27,8 +30,9 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
 
         public void UpdateEmail(string email)
         {
-            InvalidParametersException.ThrowIfNull(email, "Email inválido.");
             Address = email;
+            this.CheckPropertiesIsNull();
         }
+
     }
 }

@@ -68,7 +68,8 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             var user = new User(name: request.Name,
                                                 email: new Email(request.Email),
                                                 password: new Password(request.Password),
-                                                role: "Administrador");
+                                                role: "Administrador",
+                                                ibge: new Ibge());
 
             user.Email.VerifyEmail.GenerateCode();
 

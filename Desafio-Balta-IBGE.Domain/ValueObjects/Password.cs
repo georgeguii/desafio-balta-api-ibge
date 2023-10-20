@@ -1,4 +1,5 @@
-﻿using Desafio_Balta_IBGE.Shared.Exceptions;
+﻿using Desafio_Balta_IBGE.Domain.Atributes;
+using Desafio_Balta_IBGE.Shared.Exceptions;
 using Desafio_Balta_IBGE.Shared.Extensions;
 using Desafio_Balta_IBGE.Shared.Result;
 using Desafio_Balta_IBGE.Shared.ValueObjects;
@@ -13,10 +14,11 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         }
         public Password(string hash)
         {
-            InvalidParametersException.ThrowIfNull(hash, "Senha inválida.");
             Hash = hash.Trim().Encrypt();
+            //this.CheckPropertiesIsNull();
         }
 
+        [IfNull(ErrorMessage = "Senha inválida.")]
         public string? Hash { get; private set; }
         public string? Code { get; private set; }
         public DateTime? ExpireDate { get; private set; }
