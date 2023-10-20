@@ -1,7 +1,8 @@
-﻿using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
-using Desafio_Balta_IBGE.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+
 using Desafio_Balta_IBGE.Infra.Data.Context;
-using Microsoft.EntityFrameworkCore;
+using Desafio_Balta_IBGE.Domain.Models;
+using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 
 namespace Desafio_Balta_IBGE.Infra.Repositories;
 
@@ -21,6 +22,26 @@ public sealed class IbgeRepository : IIbgeRepository
 
     public async Task<Ibge> GetByIdAsync(string id)
         => await _context.Ibge.Where(x => x.IbgeId.Equals(id)).FirstOrDefaultAsync();
+
+    public async Task<bool> UpdateCityAsync(Ibge ibge)
+    {
+        var updated = _context
+            .Ibge
+            .Where(x => x.IbgeId == ibge.IbgeId)
+            .ExecuteUpdate(x => x.SetProperty(x => x.City, ibge.City));
+
+        return updated != 0;
+    }
+
+    public async Task<bool> UpdateStateAsync(Ibge ibge)
+    {
+        var updated = _context
+            .Ibge
+            .Where(x => x.IbgeId == ibge.IbgeId)
+            .ExecuteUpdate(x => x.SetProperty(x => x.State, ibge.State));
+
+        return updated != 0;
+    }
 
     public async Task<bool> RemoveAsync(string id)
     {
