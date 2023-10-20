@@ -1,22 +1,30 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 using Desafio_Balta_IBGE.Domain.Models;
 using Desafio_Balta_IBGE.Infra.Data.Context;
-using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
+using Microsoft.EntityFrameworkCore;
 
 namespace Desafio_Balta_IBGE.Infra.Repositories;
 
-public class IbgeRepository : BaseRepository<Ibge>, IIbgeRepository
+public sealed class IbgeRepository : IIbgeRepository
 {
-    public IbgeRepository(IbgeContext context) : base(context) { }
+    private readonly IbgeContext _context;
+    public IbgeRepository(IbgeContext context)
+    {
+        _context = context;
+    }
+
+    public async Task AddAsync(Ibge entity)
+    => await _context.Ibge.AddAsync(entity);
 
     public async Task<bool> IsIbgeCodeRegisteredAsync(string ibgeId)
-        => await _dbSet.AnyAsync(x => x.IbgeId.Equals(ibgeId));
+        => await _context.Ibge.AnyAsync(x => x.IbgeId.Equals(ibgeId));
 
     public async Task<Ibge> GetByIdAsync(string id)
-        => await _dbSet.SingleOrDefaultAsync(x => x.IbgeId.Contains(id));
+        => await _context.Ibge.Where(x => x.IbgeId.Equals(id)).FirstOrDefaultAsync();
 
-    public async Task<Ibge> GetByCityAsync(string city)
-        => await _dbSet.SingleOrDefaultAsync(x => x.City.Contains(city));
-
-
+    public async Task<bool> RemoveAsync(string id)
+    {
+        var result = await _context.Ibge.Where(x => x.IbgeId.Equals(id)).ExecuteDeleteAsync();
+        return result != 0;
+    }
 }
