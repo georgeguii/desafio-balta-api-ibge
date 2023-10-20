@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Desafio_Balta_IBGE.Shared.Exceptions
 {
@@ -35,6 +32,14 @@ namespace Desafio_Balta_IBGE.Shared.Exceptions
         }
 
         public static void ThrowIfNull<T>(T obj, string message = __message) where T : class
+        {
+            if (obj == null)
+            {
+                throw new InvalidParametersException(message);
+            }
+        }
+
+        public static void ThrowIfNull<T>(List<T> obj, string message = __message) where T : class
         {
             if (obj == null)
             {
