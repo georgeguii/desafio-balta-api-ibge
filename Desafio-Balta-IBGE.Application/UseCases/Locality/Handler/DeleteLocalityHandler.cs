@@ -1,12 +1,13 @@
 ﻿using System.Net;
 using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
+using Desafio_Balta_IBGE.Application.Abstractions.Locality;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
 
-public class DeleteLocalityHandler
+public class DeleteLocalityHandler : IDeleteLocalityHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IIbgeRepository _ibgeRepository;
@@ -41,12 +42,11 @@ public class DeleteLocalityHandler
             #endregion
 
             _unitOfWork.BeginTransaction();
-            _ibgeRepository.RemoveAsync(ibge.IbgeId);
+            await _ibgeRepository.RemoveAsync(ibge.IbgeId);
             await _unitOfWork.Commit(cancellationToken);
 
             return new DeleteLocalityResponse(StatusCode: HttpStatusCode.OK,
-                                Message: "Localidade criada com sucesso.",
-                                Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                                Message: "Localidade criada com sucesso.");
         }
         catch (Exception)
         {
