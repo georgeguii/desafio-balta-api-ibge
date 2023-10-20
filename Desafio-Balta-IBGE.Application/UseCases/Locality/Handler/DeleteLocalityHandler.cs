@@ -41,7 +41,7 @@ public class DeleteLocalityHandler
             #endregion
 
             _unitOfWork.BeginTransaction();
-            _ibgeRepository.Delete(ibge);
+            _ibgeRepository.RemoveAsync(ibge.IbgeId);
             await _unitOfWork.Commit(cancellationToken);
 
             return new DeleteLocalityResponse(StatusCode: HttpStatusCode.OK,
