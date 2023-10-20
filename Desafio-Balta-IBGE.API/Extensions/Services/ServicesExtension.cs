@@ -1,6 +1,9 @@
 ﻿using Desafio_Balta_IBGE.Application.Abstractions;
+using Desafio_Balta_IBGE.Application.Abstractions.Locality;
+using Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Handler;
 using Desafio_Balta_IBGE.Domain.Interfaces.BaseRepository;
+using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
 using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
 using Desafio_Balta_IBGE.Infra.Data.Context;
@@ -26,6 +29,7 @@ public static class ServicesExtension
 
         builder.Services.AddScoped(serviceType: typeof(IBaseRepository<>), implementationType: typeof(BaseRepository<>));
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IIbgeRepository, IbgeRepository>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         #endregion
@@ -44,6 +48,13 @@ public static class ServicesExtension
         builder.Services.AddScoped<IUpdateNameUserHandler, UpdateNameUserHandler>();
         builder.Services.AddScoped<IUpdateEmailHandler, UpdateEmailHandler>();
         builder.Services.AddScoped<IUpdatePasswordUserHandler, UpdatePasswordUserHandler>();
+
+        #endregion
+
+        #region Locality Handler
+
+        builder.Services.AddScoped<ICreateLocalityHandler, CreateLocalityHandler>();
+        builder.Services.AddScoped<IDeleteLocalityHandler, DeleteLocalityHandler>();
 
         #endregion
 

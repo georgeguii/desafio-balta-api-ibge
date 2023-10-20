@@ -1,12 +1,13 @@
 ﻿using System.Net;
 using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
+using Desafio_Balta_IBGE.Application.Abstractions.Locality;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
 
-public class DeleteLocalityHandler
+public class DeleteLocalityHandler : IDeleteLocalityHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IIbgeRepository _ibgeRepository;
@@ -36,17 +37,20 @@ public class DeleteLocalityHandler
             var ibge = await _ibgeRepository.GetByIdAsync(request.IbgeId);
             if (ibge is null)
                 return new DeleteLocalityResponse(StatusCode: HttpStatusCode.NotFound,
-                                         Message: "Código do IBGE informado não está cadastrado.",
-                                         Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                                         Message: "O código do IBGE informado não está cadastrado.");
             #endregion
 
+            #region Apaga localidade
             _unitOfWork.BeginTransaction();
-            _ibgeRepository.Delete(ibge);
+            var deleted = await _ibgeRepository.RemoveAsync(ibge.IbgeId);
+            if (deleted == false)
+                return new DeleteLocalityResponse(StatusCode: HttpStatusCode.InternalServerError,
+                                         Message: "Houve uma falha na exclusão do usuário. Por favor, tente novamente mais tarde.");
             await _unitOfWork.Commit(cancellationToken);
+            #endregion
 
             return new DeleteLocalityResponse(StatusCode: HttpStatusCode.OK,
-                                Message: "Localidade criada com sucesso.",
-                                Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                                Message: "Localidade removida com sucesso.");
         }
         catch (Exception)
         {

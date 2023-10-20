@@ -2,7 +2,6 @@
 using Desafio_Balta_IBGE.Domain.Models;
 using Desafio_Balta_IBGE.Shared.Entities;
 using Desafio_Balta_IBGE.Domain.ValueObjects;
-using Desafio_Balta_IBGE.Infra.Data.Mapping;
 
 namespace Desafio_Balta_IBGE.Infra.Data.Context;
 

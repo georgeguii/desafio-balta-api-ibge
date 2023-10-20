@@ -1,13 +1,14 @@
 ﻿using System.Net;
+using Desafio_Balta_IBGE.Domain.Models;
 using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
-using Desafio_Balta_IBGE.Domain.Models;
+using Desafio_Balta_IBGE.Application.Abstractions.Locality;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
 
-public class CreateLocalityHandler
+public class CreateLocalityHandler : ICreateLocalityHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IIbgeRepository _ibgeRepository;

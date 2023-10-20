@@ -1,3 +1,4 @@
+using Desafio_Balta_IBGE.API.Endpoints.Locality;
 using Desafio_Balta_IBGE.API.Endpoints.Login;
 using Desafio_Balta_IBGE.API.Endpoints.Users;
 using Desafio_Balta_IBGE.API.Extensions.Services;
@@ -37,6 +38,7 @@ var app = builder.Build();
 
 app.AddUserRoutes();
 app.AddLoginRoutes();
+app.AddLocalityRoutes();
 
 if (app.Environment.IsDevelopment())
 {

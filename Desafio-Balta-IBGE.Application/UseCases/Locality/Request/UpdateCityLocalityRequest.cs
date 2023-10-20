@@ -5,10 +5,12 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 
 public class UpdateCityLocalityRequest
 {
+    public string IbgeId { get; init; }
     public string City { get; init; }
 
     public UpdateCityLocalityRequest(string ibgeId, string city)
     {
+        IbgeId = ibgeId.Trim();
         City = city.Trim();
     }
 

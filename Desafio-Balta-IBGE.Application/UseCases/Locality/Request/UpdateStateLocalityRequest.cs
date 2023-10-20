@@ -5,10 +5,12 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 
 public class UpdateStateLocalityRequest
 {
+    public string IbgeId { get; init; }
     public string State { get; init; }
 
-    public UpdateStateLocalityRequest(string state)
+    public UpdateStateLocalityRequest(string ibgeId, string state)
     {
+        IbgeId = ibgeId.Trim();
         State = state.Trim();
     }
 
