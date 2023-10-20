@@ -11,7 +11,6 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public Email(string address)
         {
             Address = address.Trim();
-            //this.CheckPropertiesIsNull();
         }
 
         [IfNull(ErrorMessage = "Email inválido.")]

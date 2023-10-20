@@ -31,7 +31,6 @@ namespace Desafio_Balta_IBGE.Domain.Models
         [IfNull(ErrorMessage = "Email inválido.")]
         public Email Email { get; private set; }
 
-
         [IfNull(ErrorMessage = "Role inválido.")]
         public string Role { get; private set; }
 

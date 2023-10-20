@@ -15,7 +15,6 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public Password(string hash)
         {
             Hash = hash.Trim().Encrypt();
-            //this.CheckPropertiesIsNull();
         }
 
         [IfNull(ErrorMessage = "Senha inválida.")]
