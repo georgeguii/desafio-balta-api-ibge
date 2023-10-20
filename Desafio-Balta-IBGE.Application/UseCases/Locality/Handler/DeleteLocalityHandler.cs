@@ -46,7 +46,7 @@ public class DeleteLocalityHandler : IDeleteLocalityHandler
             await _unitOfWork.Commit(cancellationToken);
 
             return new DeleteLocalityResponse(StatusCode: HttpStatusCode.OK,
-                                Message: "Localidade criada com sucesso.");
+                                Message: "Localidade removida com sucesso.");
         }
         catch (Exception)
         {
