@@ -37,13 +37,17 @@ public class DeleteLocalityHandler : IDeleteLocalityHandler
             var ibge = await _ibgeRepository.GetByIdAsync(request.IbgeId);
             if (ibge is null)
                 return new DeleteLocalityResponse(StatusCode: HttpStatusCode.NotFound,
-                                         Message: "Código do IBGE informado não está cadastrado.",
-                                         Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                                         Message: "O código do IBGE informado não está cadastrado.");
             #endregion
 
+            #region Apaga localidade
             _unitOfWork.BeginTransaction();
-            await _ibgeRepository.RemoveAsync(ibge.IbgeId);
+            var deleted = await _ibgeRepository.RemoveAsync(ibge.IbgeId);
+            if (deleted == false)
+                return new DeleteLocalityResponse(StatusCode: HttpStatusCode.InternalServerError,
+                                         Message: "Houve uma falha na exclusão do usuário. Por favor, tente novamente mais tarde.");
             await _unitOfWork.Commit(cancellationToken);
+            #endregion
 
             return new DeleteLocalityResponse(StatusCode: HttpStatusCode.OK,
                                 Message: "Localidade removida com sucesso.");
