@@ -32,12 +32,13 @@ namespace Desafio_Balta_IBGE.Shared.Extensions
 
                     var thisAssembly = Assembly.GetExecutingAssembly();
 
-                    //var assembly = thisAssembly.GetReferencedAssemblies().Where(x => x.Name.Contains("ValueObjectExtensions")).FirstOrDefault();
-                    
-                    //var namespaceName = thisAssembly.GetName().Name.ToString();
+                    var assembly = thisAssembly.GetReferencedAssemblies().Where(x => x.Name.Contains("ValueObjectExtensions")).FirstOrDefault();
 
+                    string namespaceName = thisAssembly.GetName().Name.ToString().Replace("-", "_");
 
-                    var method = thisAssembly.GetType("Desafio_Balta_IBGE.Shared.Extensions.ValueObjectExtensions")!.GetMethods().FirstOrDefault(x => x.Name.Equals("CheckPropertiesIsNull"));
+                    string name = $"{namespaceName}.Extensions.ValueObjectExtensions";
+
+                    var method = thisAssembly.GetType(name)!.GetMethods().FirstOrDefault(x => x.Name.Equals("CheckPropertiesIsNull"));
 
                     var generic = method.MakeGenericMethod(valueObjectProperty.GetType());
 
@@ -48,9 +49,15 @@ namespace Desafio_Balta_IBGE.Shared.Extensions
                 {
                     var entityProperty = property.GetValue(obj)!;
 
-                    Assembly thisAssembly = Assembly.GetExecutingAssembly();
+                    var thisAssembly = Assembly.GetExecutingAssembly();
 
-                    var method = thisAssembly.GetType("Desafio_Balta_IBGE.Shared.Extensions.EntityExtensions")!.GetMethods().FirstOrDefault(x => x.Name.Equals("CheckPropertiesIsNull"));
+                    var assembly = thisAssembly.GetReferencedAssemblies().Where(x => x.Name.Contains("EntityExtensions")).FirstOrDefault();
+
+                    string namespaceName = thisAssembly.GetName().Name.ToString().Replace("-", "_");
+
+                    string name = $"{namespaceName}.Extensions.EntityExtensions";
+
+                    var method = thisAssembly.GetType(name)!.GetMethods().FirstOrDefault(x => x.Name.Equals("CheckPropertiesIsNull"));
 
                     var generic = method.MakeGenericMethod(entityProperty.GetType());
 
