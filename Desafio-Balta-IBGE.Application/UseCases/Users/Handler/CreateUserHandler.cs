@@ -1,4 +1,5 @@
-﻿using Desafio_Balta_IBGE.Application.Abstractions.Users;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Response;
+using Desafio_Balta_IBGE.Application.Abstractions.Users;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
 using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
@@ -15,10 +16,6 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
         private readonly IUserRepository __userRepository;
         private readonly IUnitOfWork __unitOfWork;
 
-        public CreateUserHandler()
-        {
-            
-        }
         public CreateUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             __userRepository = userRepository;
@@ -31,7 +28,6 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             var result = request.Validar();
 
             if (!result.IsValid)
-                
                 return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                              Message: "Requisição inválida. Por favor, valide os dados informados.",
                                              Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
@@ -42,7 +38,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             {
                 #region Verificar se o E-mail está cadastrado
 
-                var emailCadastrado = await __userRepository.IsEmailRegisteredAsync(email: request.Email);
+                var emailCadastrado = await __userRepository.IsEmailRegisteredAsync(email: request.Email!.Trim());
                 if (emailCadastrado)
                     return new NotFoundUser(StatusCode: HttpStatusCode.Conflict,
                                             Message: "Este e-mail já está cadastrado.");
@@ -63,12 +59,15 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             }
         }
 
-        private async Task<CreatedSuccessfully> AddUser(CreateUserRequest request, CancellationToken cancellationToken)
+        private async Task<IResponse> AddUser(CreateUserRequest request, CancellationToken cancellationToken)
         {
-            var user = new User(name: request.Name,
-                                                email: new Email(request.Email),
-                                                password: new Password(request.Password),
-                                                role: "Administrador");
+            var user = new User(name: request.Name!.Trim(),
+                                email: new Email(request.Email!.Trim()),
+                                password: new Password(request.Password!.Trim()),
+                                role: "Administrador");
+            if (!user.IsValid)
+                return new DomainNotification(StatusCode: HttpStatusCode.BadRequest,
+                                       Errors: user.Errors);
 
             user.Email.VerifyEmail.GenerateCode();
 

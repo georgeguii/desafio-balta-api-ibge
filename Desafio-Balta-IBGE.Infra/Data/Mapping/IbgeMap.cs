@@ -12,6 +12,8 @@ public sealed class IbgeMap : IEntityTypeConfiguration<Ibge>
         builder.ToTable("Ibge");
 
         builder.Ignore(x => x.Id);
+        builder.Ignore(x => x.IsValid);
+        builder.Ignore(x => x.Errors);
 
         builder.HasKey(x => x.IbgeId);
 

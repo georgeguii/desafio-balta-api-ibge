@@ -7,6 +7,7 @@ using Desafio_Balta_IBGE.Application.Abstractions.Locality;
 using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 using FluentValidation.Results;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
+using Desafio_Balta_IBGE.Application.Abstractions.Response;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
 
@@ -36,7 +37,7 @@ public class CreateLocalityHandler : ICreateLocalityHandler
         {
             #region Validação de código do IBGE (Id)
 
-            var isRegistered = await _ibgeRepository.IsIbgeCodeRegisteredAsync(request.IbgeId);
+            var isRegistered = await _ibgeRepository.IsIbgeCodeRegisteredAsync(request.IbgeId!.Trim());
             if (isRegistered)
                 return new CodeAlreadyRegistered(StatusCode: HttpStatusCode.Conflict,
                                                  Message: "Já existe uma localidade com este código do IBGE cadastrado.");
@@ -66,11 +67,15 @@ public class CreateLocalityHandler : ICreateLocalityHandler
                                             city: request.City,
                                             state: request.State);
 
+        if (!locality.IsValid)
+            return new DomainNotification(StatusCode: HttpStatusCode.BadRequest,
+                                          Errors: locality.Errors);
+
         _unitOfWork.BeginTransaction();
         await _ibgeRepository.AddAsync(locality);
         await _unitOfWork.Commit(cancellationToken);
 
-        return new CreatedSuccessfully(StatusCode: HttpStatusCode.OK,
+        return new CreatedSuccessfully(StatusCode: HttpStatusCode.Created,
                                             Message: "Localidade criada com sucesso.");
     }
 }

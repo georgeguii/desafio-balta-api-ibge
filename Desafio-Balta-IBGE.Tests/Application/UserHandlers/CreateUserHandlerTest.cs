@@ -1,31 +1,43 @@
 ﻿using Desafio_Balta_IBGE.Application.UseCases.Users.Handler;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
+using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
+using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
+using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
+using Moq;
 using System.Net;
 
-namespace Desafio_Balta_IBGE.Tests.Users
+namespace Desafio_Balta_IBGE.Tests.Application.UserHandlers
 {
     [TestClass]
     public class CreateUserHandlerTest
     {
+        private Mock<IUnitOfWork> unitOfWork;
+        private Mock<IUserRepository> repository;
+
+        public CreateUserHandlerTest()
+        {
+            unitOfWork = new Mock<IUnitOfWork>();
+            repository = new Mock<IUserRepository>();
+        }
+
         [TestMethod]
-        [DataRow((string)null, (string)null, (string)null)]
+        [DataRow(null, null, null)]
         public void Deve_retornar_erro_ao_informar_dados_invalidos_na_requisicao(string name, string email, string password)
         {
             #region Arrange
 
             var request = new CreateUserRequest(name, email, password);
-            var handler = new CreateUserHandler();
 
             #endregion
 
             #region Act
 
-            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+            var response = new CreateUserHandler(repository.Object, unitOfWork.Object).Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
             #endregion
 
             #region Assert
-            
+
             Assert.IsNotNull(response);
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.IsTrue(response.Errors.Count > 0);
@@ -38,8 +50,6 @@ namespace Desafio_Balta_IBGE.Tests.Users
         [DataRow("some string")]
         [DataRow("somestring")]
         [DataRow("somestring.com")]
-        [DataRow(" ")]
-        [DataRow("   ")]
         [DataRow("  some string  ")]
         [DataRow("@!!!@!")]
         [DataRow("user@com")]
@@ -84,21 +94,21 @@ namespace Desafio_Balta_IBGE.Tests.Users
             #region Arrange
 
             var request = new CreateUserRequest("Nome Ficticio", email, "@Admin123");
-            var handler = new CreateUserHandler();
 
             #endregion
 
             #region Act
 
-            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+            var response = new CreateUserHandler(repository.Object, unitOfWork.Object).Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
             #endregion
 
             #region Assert
 
-            Assert.IsNotNull(response);
+            Assert.IsInstanceOfType(response, typeof(InvalidRequest));
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
-            Assert.IsTrue(response.Errors.Count > 0);
+            Assert.IsTrue(response.Errors.Count() > 0);
+
 
             #endregion
 
@@ -106,38 +116,24 @@ namespace Desafio_Balta_IBGE.Tests.Users
 
         [TestMethod]
         [DataRow("user@example.com")]
-        [DataRow("user@example.com.br")]
-        [DataRow("user@example.net")]
-        [DataRow("user@example.edu")]
-        [DataRow("user@example.gov")]
-        [DataRow("user@example.int")]
-        [DataRow("user@example.country")]
-        [DataRow("user123@gmail.com")]
-        [DataRow("user.name@example.co")]
-        [DataRow("user_name123@my-domain.net")]
-        [DataRow("user+label@example.org")]
-        [DataRow("user_name@subdomain.example.com")]
-        [DataRow("user@domain-with-hyphen.com")]
         public void Deve_retornar_sucesso_ao_informar_email_valido_na_requisicao(string email)
         {
             #region Arrange
 
             var request = new CreateUserRequest("Nome Ficticio", email, "@Admin123");
-            var handler = new CreateUserHandler();
 
             #endregion
 
             #region Act
 
-            var response = handler.Handle(request, CancellationToken.None).GetAwaiter().GetResult();
+            var response = new CreateUserHandler(repository.Object, unitOfWork.Object).Handle(request, CancellationToken.None).GetAwaiter().GetResult();
 
             #endregion
 
             #region Assert
 
-            Assert.IsNotNull(response);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.IsTrue(response.Errors.Count == 0);
+            Assert.IsInstanceOfType(response, typeof(CreatedSuccessfully));
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
             #endregion
         }

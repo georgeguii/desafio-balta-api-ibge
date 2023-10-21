@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Desafio_Balta_IBGE.Domain.Atributes
+namespace Desafio_Balta_IBGE.Shared.Atributes
 {
     public class IfNullAttribute : ValidationAttribute
     {

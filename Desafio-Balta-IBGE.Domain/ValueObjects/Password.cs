@@ -1,12 +1,14 @@
-﻿using Desafio_Balta_IBGE.Domain.Atributes;
+﻿using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
+using Desafio_Balta_IBGE.Shared.Atributes;
 using Desafio_Balta_IBGE.Shared.Exceptions;
 using Desafio_Balta_IBGE.Shared.Extensions;
 using Desafio_Balta_IBGE.Shared.Result;
 using Desafio_Balta_IBGE.Shared.ValueObjects;
+using Errors = System.Collections.Generic.List<System.Collections.Generic.Dictionary<string, string>>;
 
 namespace Desafio_Balta_IBGE.Domain.ValueObjects
 {
-    public sealed class Password : ValueObject
+    public sealed class Password : ValueObject, IValidate
     {
         public Password()
         {
@@ -31,11 +33,23 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
             ActivateDate = null;
         }
 
+        public void Validate()
+        {
+            var errors = new Errors();
+            errors.AddRange(this.CheckIfPropertiesIsNull());
+            if (errors.Count > 0)
+            {
+                AddNotification(errors);
+            }
+        }
+
         public bool Verify(string password)
-            => Criptography.CompareHash(password, Hash);
+            => Criptography.CompareHash(password, Hash!);
 
         public VerifyCodeResult VerifyCode(string code)
         {
+            InvalidParametersException.ThrowIfNull(code, "Código informado é inválido.");
+
             if (Code is null && ActivateDate != null)
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já foi verificado.");
 
@@ -47,8 +61,6 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
 
             if (ExpireDate < DateTime.Now)
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já expirou.");
-
-            InvalidParametersException.ThrowIfNull(code, "Código informado é inválido.");
 
             return new VerifyCodeResult(IsCodeValid: true, Message: string.Empty);
         }
