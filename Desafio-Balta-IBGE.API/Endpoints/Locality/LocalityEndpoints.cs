@@ -4,6 +4,7 @@ using Desafio_Balta_IBGE.Application.Abstractions.Locality;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Domain.Interfaces.Services;
 using Desafio_Balta_IBGE.Domain.DTO;
+using Desafio_Balta_IBGE.Shared.Exceptions;
 
 namespace Desafio_Balta_IBGE.API.Endpoints.Locality;
 
@@ -87,19 +88,23 @@ public static class LocalityEndpoints
                                                  [FromServices] IQueriesServices services,
                                                  CancellationToken cancellationToken) =>
         {
-            var localities = await services.GetLocalitiesByState(state);
-
-            return Results.Ok(localities);
-
+                var localities = await services.GetLocalitiesByState(state);
+                return Results.Ok(localities);
         });
 
         app.MapGet("localities/{ibgeId}", async ([FromRoute] string ibgeId,
                                                  [FromServices] IQueriesServices services,
                                                  CancellationToken cancellationToken) =>
         {
-            var locality = await services.GetLocalityByIbgeId(ibgeId);
-
-            return Results.Ok(locality);
+            try
+            {
+                var locality = await services.GetLocalityByIbgeId(ibgeId);
+                return Results.Ok(locality);
+            }
+            catch (NotFoundLocalityException ex)
+            {
+                return Results.NotFound(ex.Message);
+            }
 
         });
 
@@ -109,7 +114,6 @@ public static class LocalityEndpoints
                                         CancellationToken cancellationToken) =>
         {
             var locality = await services.GetLocalityByCity(city);
-
             return Results.Ok(locality);
         });
 
