@@ -28,7 +28,9 @@ public class DeleteLocalityHandler : IDeleteLocalityHandler
         if (!result.IsValid)
             return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                       Message: "Requisição inválida. Por favor, valide os dados informados.",
-                                      Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                                      Errors: result.Errors
+                                                    .GroupBy(error => error.PropertyName)
+                                                    .ToDictionary(group => group.Key, group => group.First().ErrorMessage));
         #endregion
 
         try

@@ -36,34 +36,20 @@ namespace Desafio_Balta_IBGE.Infra.Services
         }
 
         public async Task<IbgeDTO> GetLocalityByIbgeId(string ibgeId)
-        {
-            try
-            {
-                var ibge = await _ibgeContext
-                                .Ibge
-                                .AsQueryable()
-                                .Where(_localityQueries.GetByIbgeId(ibgeId.Trim().ToUpper()))
-                                .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
-                                .FirstOrDefaultAsync() ?? throw new NotFoundLocalityException($"Localidade não encontrada.");
-                return ibge;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Falha ao buscar localidade pelo Id do Ibge. Detalhe: {ex.Message}");
-            }
-        }
+            => await _ibgeContext
+                        .Ibge
+                        .AsQueryable()
+                        .Where(_localityQueries.GetByIbgeId(ibgeId.Trim().ToUpper()))
+                        .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
+                        .FirstOrDefaultAsync() ?? throw new NotFoundLocalityException($"Localidade não encontrada.");
 
-        public async Task<IbgeDTO> GetLocalityByCity(string city)
-        {
-            var ibge = await _ibgeContext
-                                .Ibge
-                                .AsQueryable()
-                                .Where(_localityQueries.GetByCity(city.Trim().ToUpper()))
-                                .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
-                                .FirstOrDefaultAsync() ?? throw new NotFoundLocalityException($"Localidade não encontrada.");
-
-            return ibge;
-        }
+        public async Task<IEnumerable<IbgeDTO>> GetLocalityByCity(string city)
+            => await _ibgeContext
+                        .Ibge
+                        .AsQueryable()
+                        .Where(_localityQueries.GetByCity(city.Trim().ToUpper()))
+                        .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
+                        .ToListAsync();
 
         public async Task<IEnumerable<IbgeDTO>> GetLocalitiesByState(string state)
             => await _ibgeContext

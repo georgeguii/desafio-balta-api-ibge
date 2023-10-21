@@ -103,7 +103,7 @@ public static class LocalityEndpoints
             }
             catch (NotFoundLocalityException ex)
             {
-                return Results.NotFound(ex.Message);
+                return Results.NotFound(new { Error = ex.Message } );
             }
 
         });
@@ -113,8 +113,8 @@ public static class LocalityEndpoints
                                         [FromServices] IQueriesServices services,
                                         CancellationToken cancellationToken) =>
         {
-            var locality = await services.GetLocalityByCity(city);
-            return Results.Ok(locality);
+            var localities = await services.GetLocalityByCity(city);
+            return Results.Ok(localities);
         });
 
         
