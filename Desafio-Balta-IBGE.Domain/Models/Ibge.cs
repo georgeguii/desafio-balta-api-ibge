@@ -1,12 +1,21 @@
-﻿using Desafio_Balta_IBGE.Shared.Entities;
+﻿using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
+using Desafio_Balta_IBGE.Shared.Atributes;
+using Desafio_Balta_IBGE.Shared.Entities;
 using Desafio_Balta_IBGE.Shared.Exceptions;
+using Desafio_Balta_IBGE.Shared.Extensions;
+using Errors = System.Collections.Generic.List<System.Collections.Generic.Dictionary<string, string>>;
 
 namespace Desafio_Balta_IBGE.Domain.Models;
 
-public class Ibge : Entity
+public sealed class Ibge : Entity, IValidate
 {
+    [IfNull(ErrorMessage = "Id inválido.")]
     public string IbgeId { get; private set; } = string.Empty;
+
+    [IfNull(ErrorMessage = "Cidade inválida.")]
     public string City { get; private set; } = string.Empty;
+
+    [IfNull(ErrorMessage = "Estado inválido.")]
     public string State { get; private set; } = string.Empty;
 
     public Ibge()
@@ -18,6 +27,7 @@ public class Ibge : Entity
         IbgeId = ibgeId;
         City = city;
         State = state;
+        Validate();
     }
 
     public void UpdateCity(string city)
@@ -30,5 +40,15 @@ public class Ibge : Entity
     {
         InvalidParametersException.ThrowIfNull(state, "Nome do estado inválido.");
         State = state;
+    }
+
+    public void Validate()
+    {
+        var errors = new Errors();
+        errors.AddRange(this.CheckIfPropertiesIsNull());
+        if (errors.Count > 0)
+        {
+            AddNotification(errors);
+        }
     }
 }

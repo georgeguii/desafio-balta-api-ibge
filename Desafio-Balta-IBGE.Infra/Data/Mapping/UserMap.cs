@@ -11,6 +11,8 @@ namespace Desafio_Balta_IBGE.Infra.Data.Mapping
             builder.ToTable("User");
 
             builder.Ignore(x => x.Id);
+            builder.Ignore(x => x.IsValid);
+            builder.Ignore(x => x.Errors);
 
             builder.HasKey(x => x.UserId);
 
@@ -25,6 +27,12 @@ namespace Desafio_Balta_IBGE.Infra.Data.Mapping
             #endregion
 
             #region Password
+
+            builder.OwnsOne(x => x.Password)
+                .Ignore(x => x.IsValid);
+
+            builder.OwnsOne(x => x.Password)
+                .Ignore(x => x.Errors);
 
             builder.OwnsOne(x => x.Password)
                 .Property(x => x.Hash)
@@ -58,6 +66,20 @@ namespace Desafio_Balta_IBGE.Infra.Data.Mapping
             #endregion
 
             #region Email
+
+            builder.OwnsOne(x => x.Email)
+                .Ignore(x => x.IsValid);
+
+            builder.OwnsOne(x => x.Email)
+                .Ignore(x => x.Errors);
+
+            builder.OwnsOne(x => x.Email)
+                .OwnsOne(x => x.VerifyEmail)
+                .Ignore(x => x.IsValid);
+
+            builder.OwnsOne(x => x.Email)
+                .OwnsOne(x => x.VerifyEmail)
+                .Ignore(x => x.Errors);
 
             builder.OwnsOne(x => x.Email)
               .Property(x => x.Address)

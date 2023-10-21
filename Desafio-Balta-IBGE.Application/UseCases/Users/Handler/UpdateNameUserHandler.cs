@@ -1,4 +1,5 @@
-﻿using Desafio_Balta_IBGE.Application.Abstractions.Users;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Response;
+using Desafio_Balta_IBGE.Application.Abstractions.Users;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
 using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
@@ -66,7 +67,10 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
         private async Task<IResponse> UpdateUser(UpdateNameUserRequest request, User userDB, CancellationToken cancellationToken)
         {
-            userDB.UpdateName(request.Name);
+            userDB.UpdateName(request.Name.Trim());
+            if (!userDB.Email.IsValid)
+                return new DomainNotification(StatusCode: HttpStatusCode.BadRequest,
+                                             Errors: userDB.Email.Errors);
 
             __unitOfWork.BeginTransaction();
 

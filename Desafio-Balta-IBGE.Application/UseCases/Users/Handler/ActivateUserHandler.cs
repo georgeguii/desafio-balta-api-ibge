@@ -44,7 +44,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
                 __unitOfWork.BeginTransaction();
 
                 #region Busca usuário pelo E-mail
-                var userDB = await __userRepository.GetByEmailAsync(request.Email);
+                var userDB = await __userRepository.GetByEmailAsync(request.Email!.Trim());
                 if (userDB is null)
                     return new NotFoundUser(StatusCode: HttpStatusCode.BadRequest,
                                             Message: "E-mail informado não está cadastrado.");
@@ -53,7 +53,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 #region Verifica código
 
-                var codeResult = userDB.Email.VerifyEmail.VerifyCode(request.Code);
+                var codeResult = userDB.Email.VerifyEmail.VerifyCode(request.Code!.Trim());
                 if (!codeResult.IsCodeValid || codeResult is null)
                     return new InvalidCode(StatusCode: HttpStatusCode.BadRequest,
                                            Message: codeResult!.Message);

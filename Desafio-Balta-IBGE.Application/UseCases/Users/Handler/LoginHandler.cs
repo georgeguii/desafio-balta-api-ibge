@@ -43,7 +43,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             {
                 #region Buscar usuário
 
-                var userDB = await __userRepository.GetByEmailAsync(request.Email);
+                var userDB = await __userRepository.GetByEmailAsync(request.Email!.Trim());
                 if (userDB is null)
                     return new NotFoundUser(StatusCode: HttpStatusCode.BadRequest,
                                             Message: "Usuário informado não está cadastrado.");
@@ -60,7 +60,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 #region Valida senha
 
-                var isEquals = userDB.Password.Verify(request.Password);
+                var isEquals = userDB.Password.Verify(request.Password!.Trim());
                 if (!isEquals)
                     return new InvalidPassword(StatusCode: HttpStatusCode.BadRequest,
                                                Message: "Senha inválida.");

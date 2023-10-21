@@ -1,11 +1,12 @@
-﻿using Desafio_Balta_IBGE.Shared.Exceptions;
-using Desafio_Balta_IBGE.Shared.ValueObjects;
+﻿using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
+using Desafio_Balta_IBGE.Shared.Atributes;
 using Desafio_Balta_IBGE.Shared.Extensions;
-using Desafio_Balta_IBGE.Domain.Atributes;
+using Desafio_Balta_IBGE.Shared.ValueObjects;
+using Errors = System.Collections.Generic.List<System.Collections.Generic.Dictionary<string, string>>;
 
 namespace Desafio_Balta_IBGE.Domain.ValueObjects
 {
-    public sealed class Email : ValueObject
+    public sealed class Email : ValueObject, IValidate
     {
         public Email() { }
         public Email(string address)
@@ -30,7 +31,16 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
         public void UpdateEmail(string email)
         {
             Address = email;
-            this.CheckPropertiesIsNull();
+            Validate();
+        }
+        public void Validate()
+        {
+            var errors = new Errors();
+            errors.AddRange(this.CheckIfPropertiesIsNull());
+            if (errors.Count > 0)
+            {
+                AddNotification(errors);
+            }
         }
 
     }

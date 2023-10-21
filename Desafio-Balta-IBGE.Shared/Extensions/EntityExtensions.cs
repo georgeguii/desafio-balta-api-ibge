@@ -1,16 +1,18 @@
-﻿using Desafio_Balta_IBGE.Domain.Atributes;
+﻿using Desafio_Balta_IBGE.Shared.Atributes;
 using Desafio_Balta_IBGE.Shared.Entities;
 using Desafio_Balta_IBGE.Shared.Exceptions;
 using Desafio_Balta_IBGE.Shared.ValueObjects;
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using Errors = System.Collections.Generic.List<System.Collections.Generic.Dictionary<string, string>>;
 
 namespace Desafio_Balta_IBGE.Shared.Extensions
 {
     public static class EntityExtensions
     {
-        public static void CheckPropertiesIsNull<T>(this T obj) where T : Entity
+        private static Errors _errors;
+        public static Errors CheckIfPropertiesIsNull<T>(this T obj) where T : Entity
         {
+            _errors = new Errors();
             var properties = typeof(T)
                 .GetProperties()
                 .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(IfNullAttribute)))
@@ -24,7 +26,12 @@ namespace Desafio_Balta_IBGE.Shared.Extensions
 
                     var errorMessage = ((IfNullAttribute)attribute).GetErrorMessage();
 
-                    InvalidParametersException.ThrowIfNull(property.Name, errorMessage);
+                    var errorDictionary = new Dictionary<string, string>
+                    {
+                        { property.Name, errorMessage }
+                    };
+
+                    _errors.Add(errorDictionary);
                 }
                 else if (property.PropertyType.BaseType == typeof(ValueObject))
                 {
@@ -42,7 +49,16 @@ namespace Desafio_Balta_IBGE.Shared.Extensions
 
                     var generic = method.MakeGenericMethod(valueObjectProperty.GetType());
 
-                    generic.Invoke(obj, new object[] { valueObjectProperty });
+                    var result = generic.Invoke(obj, new object[] { valueObjectProperty });
+
+                    if (result != null && result.GetType() == typeof(Errors))
+                    {
+                        var errorsResult = (Errors)result;
+                        foreach (var error in errorsResult)
+                        {
+                            _errors.Add(error);
+                        }
+                    }
 
                 }
                 else if (property.PropertyType.BaseType == typeof(Entity))
@@ -61,9 +77,20 @@ namespace Desafio_Balta_IBGE.Shared.Extensions
 
                     var generic = method.MakeGenericMethod(entityProperty.GetType());
 
-                    generic.Invoke(obj, new object[] { entityProperty });
+                    var result = generic.Invoke(obj, new object[] { entityProperty });
+
+                    if (result != null && result.GetType() == typeof(Errors))
+                    {
+                        var errorsResult = (Errors)result;
+                        foreach (var error in errorsResult)
+                        {
+                            _errors.Add(error);
+                        }
+                    }
                 }
             }
+            return _errors;
         }
+        
     }
 }

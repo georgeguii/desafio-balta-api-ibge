@@ -1,4 +1,5 @@
-﻿using Desafio_Balta_IBGE.Application.Abstractions.Users;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Response;
+using Desafio_Balta_IBGE.Application.Abstractions.Users;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
 using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
@@ -64,9 +65,12 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             }
         }
 
-        private async Task<IResponse> UpdateUser(UpdatePasswordUserRequest request, User? userDB, CancellationToken cancellationToken)
+        private async Task<IResponse> UpdateUser(UpdatePasswordUserRequest request, User userDB, CancellationToken cancellationToken)
         {
-            userDB.Password.UpdatePassword(request.Password);
+            userDB.Password.UpdatePassword(request.Password.Trim());
+            if (!userDB.Password.IsValid)
+                return new DomainNotification(StatusCode: HttpStatusCode.BadRequest,
+                                             Errors: userDB.Password.Errors);
 
             __unitOfWork.BeginTransaction();
 

@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Desafio_Balta_IBGE.Application.DTO;
 using Desafio_Balta_IBGE.Application.Abstractions.Locality;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Domain.Interfaces.Services;
+using Desafio_Balta_IBGE.Domain.DTO;
 
 namespace Desafio_Balta_IBGE.API.Endpoints.Locality;
 

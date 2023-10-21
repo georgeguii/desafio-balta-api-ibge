@@ -1,13 +1,12 @@
 ﻿using Desafio_Balta_IBGE.Domain.Models;
 using Desafio_Balta_IBGE.Domain.ValueObjects;
-using Desafio_Balta_IBGE.Shared.Exceptions;
 
 namespace Desafio_Balta_IBGE.Tests.Users
 {
     [TestClass]
     public class UserDomainTests
     {
-        private User? __user;
+        private User __user;
         public UserDomainTests()
         {
             
@@ -31,103 +30,89 @@ namespace Desafio_Balta_IBGE.Tests.Users
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidParametersException))]
-        public void Deve_retornar_InvalidParametersException_ao_informar_dados_nulos()
+        public void Deve_retornar_erro_ao_informar_usuario_nome_nulo()
         {
             #region Arrange
 
-            __user = new User(name: null, password: null, email: null, role: null);
+            __user = new User(null, new Password("@Admin123"), new Email("email@email.com"), "Admin");
 
             #endregion
 
-            #region Act & Assert
+            #region Act
 
 
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsFalse(__user.IsValid);
 
             #endregion
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidParametersException))]
-        public void Deve_retornar_InvalidParametersException_ao_informar_nome_nulo()
+        public void Deve_retornar_erro_ao_informar_value_object_password_nulo()
         {
             #region Arrange
 
-            __user = new User(name: null, password: new Password(null), email: new Email(null), role: null);
+            __user = new User("Teste", null, new Email("email@email.com"), "Admin");
 
             #endregion
 
-            #region Act & Assert
+            #region Act
 
 
+
+            #endregion
+
+            #region Assert
+
+            Assert.Fail();
 
             #endregion
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidParametersException))]
-        public void Deve_retornar_InvalidParametersException_ao_informar_senha_nula()
+        public void Deve_retornar_erro_ao_informar_value_object_email_nulo()
         {
             #region Arrange
 
-            __user = new User(name: "Nome", password: null, email: new Email("Email"), role: null);
+            __user = new User("Teste", new Password("@Admin123"), null, "Admin");
 
             #endregion
 
-            #region Act & Assert
+            #region Act
 
 
+
+            #endregion
+
+            #region Assert
+
+            Assert.Fail();
 
             #endregion
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidParametersException))]
-        public void Deve_retornar_InvalidParametersException_ao_informar_senha_com_parametro_nulo()
+        public void Deve_retornar_erro_ao_informar_role_nulo()
         {
             #region Arrange
 
-            __user = new User(name: "Nome", password: new Password(null), email: new Email("Email"), role: null);
+            __user = new User("Teste", new Password("@Admin123"), new Email("email@email.com"), null);
 
             #endregion
 
-            #region Act & Assert
+            #region Act
 
 
 
             #endregion
-        }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidParametersException))]
-        public void Deve_retornar_InvalidParametersException_ao_informar_email_nulo()
-        {
-            #region Arrange
+            #region Assert
 
-            __user = new User(name: "Nome", password: new Password("Senha"), email: null, role: null);
-
-            #endregion
-
-            #region Act & Assert
-
-           
-
-            #endregion
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidParametersException))]
-        public void Deve_retornar_InvalidParametersException_ao_informar_email_com_parametro_nulo()
-        {
-            #region Arrange
-
-            __user = new User(name: "Nome", password: new Password("Senha"), email: new Email(null), role: null);
-
-            #endregion
-
-            #region Act & Assert
-
-
+            Assert.Fail();
 
             #endregion
         }
