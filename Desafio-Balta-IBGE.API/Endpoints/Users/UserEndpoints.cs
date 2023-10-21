@@ -1,4 +1,4 @@
-﻿using Desafio_Balta_IBGE.Application.Abstractions;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Users;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Handler;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Microsoft.AspNetCore.Mvc;

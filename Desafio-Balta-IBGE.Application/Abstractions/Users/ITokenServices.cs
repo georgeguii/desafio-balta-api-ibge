@@ -2,7 +2,7 @@
 using Desafio_Balta_IBGE.Domain.Models;
 using System.Security.Claims;
 
-namespace Desafio_Balta_IBGE.Application.Abstractions
+namespace Desafio_Balta_IBGE.Application.Abstractions.Users
 {
     public interface ITokenServices
     {
