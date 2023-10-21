@@ -10,8 +10,8 @@ public class UpdateStateLocalityRequest
 
     public UpdateStateLocalityRequest(string ibgeId, string state)
     {
-        IbgeId = ibgeId.Trim();
-        State = state.Trim();
+        IbgeId = ibgeId;
+        State = state;
     }
 
     public ValidationResult Validar()

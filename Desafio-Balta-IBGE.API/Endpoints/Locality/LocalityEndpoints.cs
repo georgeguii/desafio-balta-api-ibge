@@ -24,7 +24,7 @@ public static class LocalityEndpoints
             if (response.StatusCode == HttpStatusCode.Conflict)
                 return Results.Conflict(response);
 
-            return Results.Ok(response);
+            return Results.Created("localities/{id}", response);
         });
 
         app.MapPut("localities/{ibgeId}/update-city", async ([FromRoute] string ibgeId,
@@ -44,22 +44,22 @@ public static class LocalityEndpoints
             return Results.Ok(response);
         });
 
-        //app.MapPut("localities/{ibgeId}/update-state", async ([FromRoute] string ibgeId,
-        //                                              [FromBody] UpdateCityLocalityDTO requestDto,
-        //                                              [FromServices] IUpdateCityLocalityHandler handler,
-        //                                              CancellationToken cancellationToken) =>
-        //{
-        //    var request = new UpdateCityLocalityRequest(ibgeId, requestDto.city);
-        //    var response = await handler.Handle(request, cancellationToken);
+        app.MapPut("localities/{ibgeId}/update-state", async ([FromRoute] string ibgeId,
+                                                      [FromBody] UpdateStateLocalityDTO requestDto,
+                                                      [FromServices] IUpdateStateLocalityHandler handler,
+                                                      CancellationToken cancellationToken) =>
+        {
+            var request = new UpdateStateLocalityRequest(ibgeId, requestDto.state);
+            var response = await handler.Handle(request, cancellationToken);
 
-        //    if (response.StatusCode == HttpStatusCode.BadRequest)
-        //        return Results.BadRequest(response);
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+                return Results.BadRequest(response);
 
-        //    if (response.StatusCode == HttpStatusCode.Conflict)
-        //        return Results.NotFound(response);
+            if (response.StatusCode == HttpStatusCode.Conflict)
+                return Results.NotFound(response);
 
-        //    return Results.Ok(response);
-        //});
+            return Results.Ok(response);
+        });
 
         app.MapDelete("localities", async ([FromBody] DeleteLocalityRequest request,
                                            [FromServices] IDeleteLocalityHandler handler,
@@ -82,9 +82,9 @@ public static class LocalityEndpoints
             var localities = await services.GetAll();
 
             return Results.Ok(localities);
-        });
+        }).RequireAuthorization("Administrador");
 
-        app.MapGet("localities/{state}", async ([FromRoute] string state,
+        app.MapGet("localities/search-by-state/{state}", async ([FromRoute] string state,
                                                  [FromServices] IQueriesServices services,
                                                  CancellationToken cancellationToken) =>
         {
@@ -92,7 +92,7 @@ public static class LocalityEndpoints
                 return Results.Ok(localities);
         });
 
-        app.MapGet("localities/{ibgeId}", async ([FromRoute] string ibgeId,
+        app.MapGet("localities/search-by-ibgeId/{ibgeId}", async ([FromRoute] string ibgeId,
                                                  [FromServices] IQueriesServices services,
                                                  CancellationToken cancellationToken) =>
         {
@@ -109,7 +109,7 @@ public static class LocalityEndpoints
         });
 
 
-        app.MapGet("localities/{city}", async ([FromRoute] string city,
+        app.MapGet("localities/search-by-city/{city}", async ([FromRoute] string city,
                                         [FromServices] IQueriesServices services,
                                         CancellationToken cancellationToken) =>
         {
