@@ -1,31 +1,26 @@
-﻿using AutoFixture;
-using Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
+﻿using Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
 using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
-using Desafio_Balta_IBGE.Domain.Models;
 using Moq;
 using System.Net;
 
 namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
 {
     [TestClass]
-    public class CreateLocalityHandlerTests
+    public class DeleteLocalityHandlerTests
     {
         private Mock<IUnitOfWork> unitOfWork;
         private Mock<IIbgeRepository> repository;
         private CreateLocalityRequest request;
-        private Fixture fixture;
+        private const string characters = "abcdefghijklmnopqrstuvwxyz0123456789";
 
-        public CreateLocalityHandlerTests()
+        public DeleteLocalityHandlerTests()
         {
             unitOfWork = new Mock<IUnitOfWork>();
             repository = new Mock<IIbgeRepository>();
-
-            fixture = new Fixture();
         }
-
         [TestMethod]
         public void Deve_retornar_InvalidRequest_com_status_code_400_ao_informar_ibgeId_invalido()
         {
@@ -85,14 +80,34 @@ namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
         }
 
         [TestMethod]
-        public void Deve_retornar_InvalidRequest_com_status_code_400_ao_informar_estado_nulo()
+        [DataRow("11")]
+        [DataRow("32")]
+        [DataRow("1C")]
+        [DataRow("A")]
+        [DataRow("K9")]
+        [DataRow(null)]
+        [DataRow("1A")]
+        [DataRow("A@")]
+        [DataRow("A!")]
+        [DataRow("A.")]
+        [DataRow("A?")]
+        [DataRow("A.")]
+        [DataRow("A_")]
+        [DataRow("A-")]
+        [DataRow("A#")]
+        [DataRow("A*")]
+        [DataRow("A+")]
+        [DataRow("A=")]
+        [DataRow("A'")]
+        [DataRow("A\"")]
+        public void Deve_retornar_InvalidRequest_com_status_code_400_ao_informar_estado_invalido(string state)
         {
             #region Arrange
 
             var random = new Random();
             int ibgeId = random.Next(1000000, 1000000);
 
-            request = new CreateLocalityRequest(ibgeId.ToString(), "Cidade Fake", null);
+            request = new CreateLocalityRequest(ibgeId.ToString(), "Cidade Fake", state);
 
             #endregion
 
@@ -114,16 +129,34 @@ namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
         }
 
         [TestMethod]
-        public void Deve_retornar_CodeAlreadyRegistered_com_status_code_409_ao_informar_ibgeId_ja_cadastrado()
+        [DataRow("1")]
+        [DataRow("2")]
+        [DataRow("3")]
+        [DataRow("4")]
+        [DataRow("5")]
+        [DataRow("6")]
+        [DataRow("7")]
+        [DataRow("8")]
+        [DataRow("9")]
+        [DataRow("0")]
+        [DataRow("111")]
+        [DataRow("222")]
+        [DataRow("333")]
+        [DataRow("444")]
+        [DataRow("555")]
+        [DataRow("666")]
+        [DataRow("777")]
+        [DataRow("888")]
+        [DataRow("999")]
+        [DataRow("000")]
+        public void Deve_retornar_InvalidRequest_com_status_code_400_ao_informar_estado_com_numeros_e_menores_e_maiores_que_2_digitos(string state)
         {
             #region Arrange
 
             var random = new Random();
             int ibgeId = random.Next(1000000, 1000000);
 
-            request = new CreateLocalityRequest(ibgeId.ToString(), "Cidade Fake", "RJ");
-
-            repository.Setup(x => x.IsIbgeCodeRegisteredAsync(request.IbgeId)).ReturnsAsync(true);
+            request = new CreateLocalityRequest(ibgeId.ToString(), "Cidade Fake", state);
 
             #endregion
 
@@ -135,26 +168,31 @@ namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
 
             #region Assert
 
-            Assert.IsInstanceOfType(response, typeof(CodeAlreadyRegistered));
-            Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
-            Assert.AreEqual("Já existe uma localidade com este código do IBGE cadastrado.", response.Message);
+            Assert.IsInstanceOfType(response, typeof(InvalidRequest));
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.AreEqual("Requisição inválida. Por favor, valide os dados informados.", response.Message);
+            Assert.IsTrue(response.Errors.Count() > 0);
 
             #endregion
 
         }
 
         [TestMethod]
-        public void Deve_retornar_CreatedSuccessfully_com_status_code_200_ao_cadastrar_localidade_com_sucesso()
+        public void Deve_retornar_InvalidRequest_com_status_code_400_ao_informar_estado_com_letras_e_mais_de_2_digitos()
         {
             #region Arrange
 
             var random = new Random();
-            int ibgeId = random.Next(1000000, 1000000);
+            int ibgeId = random.Next(1, 1000000);
+            var tamanhoMax = 10;
+            char[] resultado = new char[tamanhoMax];
 
-            request = new CreateLocalityRequest(ibgeId.ToString(), "Cidade Fake", "RJ");
+            for (int i = 0; i < tamanhoMax; i++)
+            {
+                resultado[i] = characters[random.Next(characters.Length)];
+            }
 
-            repository.Setup(x => x.IsIbgeCodeRegisteredAsync(request.IbgeId)).ReturnsAsync(false);
-            repository.Setup(x => x.AddAsync(It.IsAny<Ibge>())).Returns(Task.CompletedTask);
+            request = new CreateLocalityRequest(ibgeId.ToString(), "Cidade Fake", resultado.ToString()!);
 
             #endregion
 
@@ -166,12 +204,15 @@ namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
 
             #region Assert
 
-            Assert.IsInstanceOfType(response, typeof(CreatedSuccessfully));
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            Assert.AreEqual("Localidade criada com sucesso.", response.Message);
+            Assert.IsInstanceOfType(response, typeof(InvalidRequest));
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.AreEqual("Requisição inválida. Por favor, valide os dados informados.", response.Message);
+            Assert.IsTrue(response.Errors.Count() > 0);
 
             #endregion
 
         }
+
+       
     }
 }

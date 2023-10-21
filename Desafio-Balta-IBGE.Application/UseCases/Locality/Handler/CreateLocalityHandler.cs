@@ -1,13 +1,12 @@
-﻿using System.Net;
-using Desafio_Balta_IBGE.Domain.Models;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Locality;
+using Desafio_Balta_IBGE.Application.Abstractions.Response;
+using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
+using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
+using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
-using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
-using Desafio_Balta_IBGE.Application.Abstractions.Locality;
-using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
-using FluentValidation.Results;
-using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
-using Desafio_Balta_IBGE.Application.Abstractions.Response;
+using Desafio_Balta_IBGE.Domain.Models;
+using System.Net;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
 
@@ -30,7 +29,9 @@ public class CreateLocalityHandler : ICreateLocalityHandler
         if (!result.IsValid)
             return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                       Message: "Requisição inválida. Por favor, valide os dados informados.",
-                                      Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                                      Errors: result.Errors
+                                                    .GroupBy(error => error.PropertyName)
+                                                    .ToDictionary(group => group.Key, group => group.First().ErrorMessage));
         #endregion
 
         try
