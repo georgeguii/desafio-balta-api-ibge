@@ -68,7 +68,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
 
             #region Assert
 
-            Assert.Fail();
+            Assert.IsFalse(__user.IsValid);
 
             #endregion
         }
@@ -90,7 +90,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
 
             #region Assert
 
-            Assert.Fail();
+            Assert.IsFalse(__user.IsValid);
 
             #endregion
         }
@@ -112,7 +112,29 @@ namespace Desafio_Balta_IBGE.Tests.Users
 
             #region Assert
 
-            Assert.Fail();
+            Assert.IsFalse(__user.IsValid);
+
+            #endregion
+        }
+
+        [TestMethod]
+        public void Deve_retornar_sucesso_ao_informar_usuario_corretamente()
+        {
+            #region Arrange
+
+            __user = new User("Teste", new Password("@Admin123"), new Email("email@email.com"), "Admin");
+
+            #endregion
+
+            #region Act
+
+
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(__user.IsValid);
 
             #endregion
         }
