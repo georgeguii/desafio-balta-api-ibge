@@ -1,4 +1,4 @@
-﻿using Desafio_Balta_IBGE.Application.Abstractions;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Users;
 using Desafio_Balta_IBGE.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

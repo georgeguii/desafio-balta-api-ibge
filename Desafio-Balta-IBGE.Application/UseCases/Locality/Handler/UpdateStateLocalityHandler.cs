@@ -1,9 +1,11 @@
-﻿using System.Net;
-using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
-using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Locality;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
-using Desafio_Balta_IBGE.Application.Abstractions.Locality;
+using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
+using Desafio_Balta_IBGE.Domain.Interfaces.IBGE;
+using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
+using Desafio_Balta_IBGE.Domain.Models;
+using System.Net;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Handler;
 
@@ -19,55 +21,59 @@ public class UpdateStateLocalityHandler : IUpdateStateLocalityHandler
     }
 
 
-    public async Task<UpdateStateLocalityResponse> Handle(UpdateStateLocalityRequest request, CancellationToken cancellationToken)
+    public async Task<IResponse> Handle(UpdateStateLocalityRequest request, CancellationToken cancellationToken)
     {
         #region Validações
 
         var result = request.Validar();
-
         if (!result.IsValid)
-
-            return new UpdateStateLocalityResponse(StatusCode: HttpStatusCode.BadRequest,
-                                         Message: "Requisição inválida. Por favor, valide os dados informados.",
-                                         Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+            return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
+                                      Message: "Requisição inválida. Por favor, valide os dados informados.",
+                                      Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
 
         #endregion
 
         try
         {
             #region Validação de código do IBGE (Id)
+
             var ibge = await _ibgeRepository.GetByIdAsync(request.IbgeId);
             if (ibge is null)
-                return new UpdateStateLocalityResponse(StatusCode: HttpStatusCode.NotFound,
-                                         Message: "O código do IBGE informado não está cadastrado.",
-                                         Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                return new CodeAlreadyRegistered(StatusCode: HttpStatusCode.NotFound,
+                                                 Message: "O código do IBGE informado não está cadastrado.");
+
             #endregion
 
             #region Atualizar estado
 
-            ibge.UpdateState(request.State);
-            _unitOfWork.BeginTransaction();
-
-            var updated = await _ibgeRepository.UpdateStateAsync(ibge);
-            if (updated == false)
-                return new UpdateStateLocalityResponse(StatusCode: HttpStatusCode.InternalServerError,
-                                         Message: $"Houve um erro ao atualizar o estado do código {request.IbgeId}.");
-
-            await _unitOfWork.Commit(cancellationToken);
+            return await UpdateLocality(request, ibge, cancellationToken);
 
             #endregion
-
-            return new UpdateStateLocalityResponse(StatusCode: HttpStatusCode.OK,
-                                         Message: $"Cidade com o código {ibge.IbgeId} atualizada com sucesso!");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             _unitOfWork.Rollback();
-            throw;
+            throw new Exception($"Falha ao atualizar localidade. Detalhe: {ex.Message}");
         }
         finally
         {
             _unitOfWork.Dispose();
         }
+    }
+
+    private async Task<IResponse> UpdateLocality(UpdateStateLocalityRequest request, Ibge ibge, CancellationToken cancellationToken)
+    {
+        ibge.UpdateState(request.State);
+        _unitOfWork.BeginTransaction();
+
+        var updated = await _ibgeRepository.UpdateStateAsync(ibge);
+        if (updated == false)
+            return new UpdateError(StatusCode: HttpStatusCode.InternalServerError,
+                                   Message: $"Houve um erro ao atualizar o estado do código {request.IbgeId}.");
+
+        await _unitOfWork.Commit(cancellationToken);
+
+        return new UpdateSuccessfully(StatusCode: HttpStatusCode.OK,
+                                     Message: $"Cidade com o código {ibge.IbgeId} atualizada com sucesso!");
     }
 }

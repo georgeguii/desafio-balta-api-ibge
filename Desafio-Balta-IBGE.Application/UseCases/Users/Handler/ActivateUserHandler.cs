@@ -1,6 +1,7 @@
-﻿using Desafio_Balta_IBGE.Application.Abstractions;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Users;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
+using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
 using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
 using Desafio_Balta_IBGE.Domain.Models;
@@ -24,7 +25,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             __unitOfWork = unitOfWork;
         }
 
-        public async Task<ActivateUserResponse> Handle(ActivateUserRequest request, CancellationToken cancellationToken)
+        public async Task<IResponse> Handle(ActivateUserRequest request, CancellationToken cancellationToken)
         {
             #region Validações
 
@@ -32,7 +33,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
             if (!result.IsValid)
 
-                return new ActivateUserResponse(StatusCode: HttpStatusCode.BadRequest,
+                return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                              Message: "Requisição inválida. Por favor, valide os dados informados.",
                                              Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
 
@@ -45,8 +46,8 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
                 #region Busca usuário pelo E-mail
                 var userDB = await __userRepository.GetByEmailAsync(request.Email);
                 if (userDB is null)
-                    return new ActivateUserResponse(StatusCode: HttpStatusCode.BadRequest,
-                                                    Message: "E-mail informado não está cadastrado.");
+                    return new NotFoundUser(StatusCode: HttpStatusCode.BadRequest,
+                                            Message: "E-mail informado não está cadastrado.");
 
                 #endregion
 
@@ -54,8 +55,8 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 var codeResult = userDB.Email.VerifyEmail.VerifyCode(request.Code);
                 if (!codeResult.IsCodeValid || codeResult is null)
-                    return new ActivateUserResponse(StatusCode: HttpStatusCode.BadRequest,
-                                                    Message: codeResult!.Message);
+                    return new InvalidCode(StatusCode: HttpStatusCode.BadRequest,
+                                           Message: codeResult!.Message);
 
                 #endregion
 
@@ -63,19 +64,19 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
                 if (activated == false)
                 {
                     __unitOfWork.Rollback();
-                    return new ActivateUserResponse(StatusCode: HttpStatusCode.InternalServerError,
-                                               Message: "Falha ao ativar conta do usuário. Por favor, tente novamente mais tarde.");
+                    return new ActivateAccountError(StatusCode: HttpStatusCode.InternalServerError,
+                                                    Message: "Falha ao ativar conta do usuário. Por favor, tente novamente mais tarde.");
                 }
 
                 await Save(userDB, cancellationToken);
 
-                return new ActivateUserResponse(StatusCode: HttpStatusCode.BadRequest,
+                return new ActivatedSuccess(StatusCode: HttpStatusCode.BadRequest,
                                                Message: $"{userDB.Name}, sua conta foi ativada com sucesso!");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 __unitOfWork.Rollback();
-                throw;
+                throw new Exception($"Falha ao ativar conta do usuário. Detalhe: {ex.Message}");
             }
             finally
             {

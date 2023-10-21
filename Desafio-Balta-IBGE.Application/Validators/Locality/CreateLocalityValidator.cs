@@ -21,7 +21,7 @@ public class CreateLocalityValidator : AbstractValidator<CreateLocalityRequest>
             .Length(2, 2)
                 .WithMessage("O estado deve possuir 2 caracteres.")
             .Matches(@"^[A-Za-z]+$")
-                .WithMessage("O estado deve possuir somente números.");
+                .WithMessage("O estado deve possuir somente letras.");
 
         RuleFor(l => l.City)
             .NotEmpty()

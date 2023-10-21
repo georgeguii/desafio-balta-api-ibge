@@ -1,6 +1,7 @@
-﻿using Desafio_Balta_IBGE.Application.Abstractions;
+﻿using Desafio_Balta_IBGE.Application.Abstractions.Users;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
+using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 using Desafio_Balta_IBGE.Domain.Interfaces.UnitOfWork;
 using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
 using Desafio_Balta_IBGE.Domain.Models;
@@ -23,7 +24,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             __userRepository = userRepository;
             __unitOfWork = unitOfWork;
         }
-        public async Task<CreateUserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
+        public async Task<IResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
         {
             #region Validações
 
@@ -31,7 +32,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
             if (!result.IsValid)
                 
-                return new CreateUserResponse(StatusCode: HttpStatusCode.BadRequest,
+                return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                              Message: "Requisição inválida. Por favor, valide os dados informados.",
                                              Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
 
@@ -43,9 +44,8 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 var emailCadastrado = await __userRepository.IsEmailRegisteredAsync(email: request.Email);
                 if (emailCadastrado)
-                    return new CreateUserResponse(StatusCode: HttpStatusCode.Conflict,
-                                                 Message: "Este e-mail já está cadastrado.",
-                                                 Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                    return new NotFoundUser(StatusCode: HttpStatusCode.Conflict,
+                                            Message: "Este e-mail já está cadastrado.");
 
                 #endregion
 
@@ -63,7 +63,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             }
         }
 
-        private async Task<CreateUserResponse> AddUser(CreateUserRequest request, CancellationToken cancellationToken)
+        private async Task<CreatedSuccessfully> AddUser(CreateUserRequest request, CancellationToken cancellationToken)
         {
             var user = new User(name: request.Name,
                                                 email: new Email(request.Email),
@@ -78,7 +78,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
             await __unitOfWork.Commit(cancellationToken);
 
-            return new CreateUserResponse(StatusCode: HttpStatusCode.Created,
+            return new CreatedSuccessfully(StatusCode: HttpStatusCode.Created,
                                           Message: "Usuário criado com sucesso. Por favor, verifique seu e-mail para ativar sua conta.",
                                           ActivationCode: user.Email.VerifyEmail.Code!,
                                           ExpireDate: user.Email.VerifyEmail.ExpireDate.ToString()!);
