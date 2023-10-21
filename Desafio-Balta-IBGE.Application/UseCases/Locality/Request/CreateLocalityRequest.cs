@@ -13,9 +13,9 @@ public class CreateLocalityRequest
 
     public CreateLocalityRequest(string ibgeId, string city, string state)
     {
-        IbgeId = ibgeId.Trim();
-        City = city.Trim();
-        State = state.Trim();
+        IbgeId = ibgeId;
+        City = city;
+        State = state;
     }
 
     public ValidationResult Validar()
