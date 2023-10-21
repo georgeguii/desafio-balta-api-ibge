@@ -75,7 +75,7 @@ public class CreateLocalityHandler : ICreateLocalityHandler
         await _ibgeRepository.AddAsync(locality);
         await _unitOfWork.Commit(cancellationToken);
 
-        return new CreatedSuccessfully(StatusCode: HttpStatusCode.OK,
+        return new CreatedSuccessfully(StatusCode: HttpStatusCode.Created,
                                             Message: "Localidade criada com sucesso.");
     }
 }

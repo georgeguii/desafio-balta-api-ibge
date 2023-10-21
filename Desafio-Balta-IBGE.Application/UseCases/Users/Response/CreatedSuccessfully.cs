@@ -13,7 +13,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Response
 
         public HttpStatusCode StatusCode { get; set; }
         public string Message { get; set; }
-        public Dictionary<string, string> Errors { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Dictionary<string, string> Errors { get; set; }
     }
     
 }

@@ -1,7 +1,7 @@
 ﻿using Desafio_Balta_IBGE.Domain.Models;
 using Desafio_Balta_IBGE.Domain.ValueObjects;
 
-namespace Desafio_Balta_IBGE.Tests.Users
+namespace Desafio_Balta_IBGE.Tests.Domain.Users
 {
     [TestClass]
     public class UserDomainTests
@@ -9,7 +9,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         private User __user;
         public UserDomainTests()
         {
-            
+
         }
 
         [TestMethod]
@@ -118,7 +118,7 @@ namespace Desafio_Balta_IBGE.Tests.Users
         }
 
         [TestMethod]
-        public void Deve_retornar_sucesso_ao_informar_usuario_corretamente()
+        public void Deve_retornar_sucesso_ao_instanciar_usuario_corretamente()
         {
             #region Arrange
 

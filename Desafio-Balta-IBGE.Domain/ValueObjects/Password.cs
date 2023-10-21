@@ -48,6 +48,8 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
 
         public VerifyCodeResult VerifyCode(string code)
         {
+            InvalidParametersException.ThrowIfNull(code, "Código informado é inválido.");
+
             if (Code is null && ActivateDate != null)
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já foi verificado.");
 
@@ -59,8 +61,6 @@ namespace Desafio_Balta_IBGE.Domain.ValueObjects
 
             if (ExpireDate < DateTime.Now)
                 return new VerifyCodeResult(IsCodeValid: false, Message: "Este código já expirou.");
-
-            InvalidParametersException.ThrowIfNull(code, "Código informado é inválido.");
 
             return new VerifyCodeResult(IsCodeValid: true, Message: string.Empty);
         }

@@ -16,10 +16,6 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
         private readonly IUserRepository __userRepository;
         private readonly IUnitOfWork __unitOfWork;
 
-        public CreateUserHandler()
-        {
-            
-        }
         public CreateUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             __userRepository = userRepository;

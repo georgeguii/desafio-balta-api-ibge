@@ -32,14 +32,14 @@ public sealed class Ibge : Entity, IValidate
 
     public void UpdateCity(string city)
     {
-        InvalidParametersException.ThrowIfNull(city, "Nome da cidade inválida.");
         City = city;
+        Validate();
     }
 
     public void UpdateState(string state)
     {
-        InvalidParametersException.ThrowIfNull(state, "Nome do estado inválido.");
         State = state;
+        Validate();
     }
 
     public void Validate()
