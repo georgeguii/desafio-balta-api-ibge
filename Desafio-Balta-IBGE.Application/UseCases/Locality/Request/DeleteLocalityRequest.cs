@@ -9,7 +9,7 @@ public class DeleteLocalityRequest
 
     public DeleteLocalityRequest(string ibgeId)
     {
-        IbgeId = ibgeId.Trim();
+        IbgeId = ibgeId;
     }
 
     public ValidationResult Validar()
