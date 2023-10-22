@@ -9,6 +9,10 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Login
     {
         public static void AddLoginRoutes(this WebApplication app)
         {
+            app.MapGet("healthCheck", () => 
+                Results.Ok("Estou viva :)")
+            );
+
             app.MapPost("login", async ([FromBody] LoginRequest request,
                                         [FromServices] ILoginHandler handler,
                                         CancellationToken cancellationToken) =>
