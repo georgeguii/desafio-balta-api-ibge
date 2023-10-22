@@ -40,7 +40,7 @@ public class UpdateCityLocalityHandler : IUpdateCityLocalityHandler
 
             var ibge = await _ibgeRepository.GetByIdAsync(request.IbgeId);
             if (ibge is null)
-                return new CodeAlreadyRegistered(StatusCode: HttpStatusCode.NotFound,
+                return new CodeNotFound(StatusCode: HttpStatusCode.NotFound,
                                                  Message: "O código do IBGE informado não está cadastrado.");
 
             #endregion

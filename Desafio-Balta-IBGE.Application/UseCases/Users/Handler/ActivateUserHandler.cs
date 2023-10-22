@@ -68,7 +68,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
                                                     Message: "Falha ao ativar conta do usuário. Por favor, tente novamente mais tarde.");
                 }
 
-                await Save(userDB, cancellationToken);
+                await Save(cancellationToken);
 
                 return new ActivatedSuccess(StatusCode: HttpStatusCode.OK,
                                                Message: $"{userDB.Name}, sua conta foi ativada com sucesso!");
@@ -84,7 +84,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             }
         }
 
-        private async Task Save(User userDB, CancellationToken cancellationToken)
+        private async Task Save(CancellationToken cancellationToken)
         {
             await __unitOfWork.Commit(cancellationToken);
         }
