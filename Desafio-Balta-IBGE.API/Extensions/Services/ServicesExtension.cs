@@ -41,12 +41,15 @@ public static class ServicesExtension
     private static void AddServices(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<ITokenServices, TokenServices>();
-        builder.Services.AddScoped<IQueriesServices, QueriesServices>();
+        builder.Services.AddScoped<ILocalityQueriesServices, LocalityQueriesServices>();
+        builder.Services.AddScoped<IUserQueriesServices, UserQueriesServices>();
     }
 
     private static void AddQueries(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<ILocalityQueries, LocalityQueries>();
+        builder.Services.AddScoped<IUserQueries, UserQueries>();
+        
     }
 
     private static void AddLogin(WebApplicationBuilder builder)

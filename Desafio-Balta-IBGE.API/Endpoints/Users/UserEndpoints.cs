@@ -1,6 +1,9 @@
 ﻿using Desafio_Balta_IBGE.Application.Abstractions.Users;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
+using Desafio_Balta_IBGE.Domain.DTO;
+using Desafio_Balta_IBGE.Domain.Interfaces.Services;
+using Desafio_Balta_IBGE.Shared.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -150,6 +153,21 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               {
                   Summary = "Excluir conta de usuário.",
                   Description = "Endpoint para excluir conta de usuário.",
+              })
+              .RequireAuthorization("Administrador")
+              .WithTags("Users");
+
+            app.MapGet("users", async ([FromServices] IUserQueriesServices services) =>
+            {
+                var users = await services.GetAllAsync();
+                
+                return Results.Ok(users);
+
+            })
+              .WithOpenApi(operation => new(operation)
+              {
+                  Summary = "Retorna todos os usuários.",
+                  Description = "Endpoint para retornar todos os usuários cadastrados.",
               })
               .RequireAuthorization("Administrador")
               .WithTags("Users");

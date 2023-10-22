@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Desafio-Balta-IBGE.Shared\Desafio-Balta-IBGE.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Queries\" />
+  </ItemGroup>
+
 </Project>

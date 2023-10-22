@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Desafio_Balta_IBGE.Infra.Services
 {
-    public sealed class QueriesServices : IQueriesServices
+    public sealed class LocalityQueriesServices : ILocalityQueriesServices
     {
         private readonly IbgeContext _ibgeContext;
         private readonly ILocalityQueries _localityQueries;
 
-        public QueriesServices(ILocalityQueries localityQueries, IbgeContext ibgeContext)
+        public LocalityQueriesServices(ILocalityQueries localityQueries, IbgeContext ibgeContext)
         {
             _localityQueries = localityQueries;
             _ibgeContext = ibgeContext;
