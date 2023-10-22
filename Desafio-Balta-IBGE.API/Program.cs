@@ -41,11 +41,10 @@ app.AddUserRoutes();
 app.AddLoginRoutes();
 app.AddLocalityRoutes();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseCors();
 app.UseAuthentication();

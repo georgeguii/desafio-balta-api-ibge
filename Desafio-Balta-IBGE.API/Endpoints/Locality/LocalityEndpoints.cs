@@ -25,7 +25,7 @@ public static class LocalityEndpoints
                 return Results.Conflict(response);
 
             return Results.Created("localities/{id}", response);
-        });
+        }).RequireAuthorization("Administrador");
 
         app.MapPut("localities/{ibgeId}/update-city", async ([FromRoute] string ibgeId,
                                                       [FromBody] UpdateCityLocalityDTO requestDto,
@@ -42,7 +42,7 @@ public static class LocalityEndpoints
                 return Results.NotFound(response);
 
             return Results.Ok(response);
-        });
+        }).RequireAuthorization("Administrador");
 
         app.MapPut("localities/{ibgeId}/update-state", async ([FromRoute] string ibgeId,
                                                       [FromBody] UpdateStateLocalityDTO requestDto,
@@ -59,7 +59,7 @@ public static class LocalityEndpoints
                 return Results.NotFound(response);
 
             return Results.Ok(response);
-        });
+        }).RequireAuthorization("Administrador");
 
         app.MapDelete("localities", async ([FromBody] DeleteLocalityRequest request,
                                            [FromServices] IDeleteLocalityHandler handler,
@@ -76,7 +76,9 @@ public static class LocalityEndpoints
             return Results.Ok(response);
         });
 
-        app.MapGet("localities", async ([FromServices] IQueriesServices services,
+        app.MapGet("localities", async ([FromQuery] int? page,
+                                        [FromQuery] int? pageSize,
+                                        [FromServices] IQueriesServices services,
                                         CancellationToken cancellationToken) =>
         {
             var localities = await services.GetAll();
@@ -106,7 +108,7 @@ public static class LocalityEndpoints
                 return Results.NotFound(new { Error = ex.Message } );
             }
 
-        });
+        }).RequireAuthorization("Administrador");
 
 
         app.MapGet("localities/search-by-city/{city}", async ([FromRoute] string city,
@@ -115,7 +117,7 @@ public static class LocalityEndpoints
         {
             var localities = await services.GetLocalityByCity(city);
             return Results.Ok(localities);
-        });
+        }).RequireAuthorization("Administrador");
 
         
     }
