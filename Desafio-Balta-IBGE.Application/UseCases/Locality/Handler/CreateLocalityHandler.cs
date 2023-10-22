@@ -64,9 +64,9 @@ public class CreateLocalityHandler : ICreateLocalityHandler
 
     private async Task<IResponse> AddLocality(CreateLocalityRequest request, CancellationToken cancellationToken)
     {
-        var locality = new Ibge(ibgeId: request.IbgeId,
-                                            city: request.City,
-                                            state: request.State);
+        var locality = new Ibge(ibgeId: request.IbgeId.Trim(),
+                                            city: request.City.Trim(),
+                                            state: request.State.Trim());
 
         if (!locality.IsValid)
             return new DomainNotification(StatusCode: HttpStatusCode.BadRequest,

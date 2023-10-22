@@ -8,6 +8,8 @@ public class UpdateStateLocalityValidator : AbstractValidator<UpdateStateLocalit
     public UpdateStateLocalityValidator()
     {
         RuleFor(x => x.IbgeId)
+            .NotNull()
+                .WithMessage("O código do IBGE não pode ser nulo.")
             .NotEmpty()
                 .WithMessage("O código do IBGE não pode ser vazio.")
             .Length(7, 7)
@@ -16,6 +18,8 @@ public class UpdateStateLocalityValidator : AbstractValidator<UpdateStateLocalit
                 .WithMessage("O código do IBGE deve possuir somente números.");
 
         RuleFor(l => l.State)
+            .NotNull()
+                .WithMessage("O estado não pode ser nulo.")
             .NotEmpty()
                 .WithMessage("O estado não pode ser vazio.")
             .Length(2, 2)

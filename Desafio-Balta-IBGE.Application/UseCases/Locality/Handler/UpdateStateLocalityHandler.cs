@@ -65,7 +65,7 @@ public class UpdateStateLocalityHandler : IUpdateStateLocalityHandler
 
     private async Task<IResponse> UpdateLocality(UpdateStateLocalityRequest request, Ibge ibge, CancellationToken cancellationToken)
     {
-        ibge.UpdateState(request.State);
+        ibge.UpdateState(request.State.Trim());
         _unitOfWork.BeginTransaction();
 
         var updated = await _ibgeRepository.UpdateStateAsync(ibge);

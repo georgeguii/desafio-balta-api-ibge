@@ -8,6 +8,8 @@ public class CreateLocalityValidator : AbstractValidator<CreateLocalityRequest>
     public CreateLocalityValidator()
     {
         RuleFor(l => l.IbgeId)
+            .NotNull()
+                .WithMessage("O código do IBGE não pode ser nulo.")
             .NotEmpty()
                 .WithMessage("O código do IBGE não pode ser vazio.")
             .Length(7, 7)
@@ -16,6 +18,8 @@ public class CreateLocalityValidator : AbstractValidator<CreateLocalityRequest>
                 .WithMessage("O código do IBGE deve possuir somente números.");
 
         RuleFor(l => l.State)
+            .NotNull()
+                .WithMessage("O estado não pode ser nulo.")
             .NotEmpty()
                 .WithMessage("O estado não pode ser vazio.")
             .Length(2, 2)
@@ -24,6 +28,8 @@ public class CreateLocalityValidator : AbstractValidator<CreateLocalityRequest>
                 .WithMessage("O estado deve possuir somente letras.");
 
         RuleFor(l => l.City)
+            .NotNull()
+                .WithMessage("A cidade não pode ser nula.")
             .NotEmpty()
                 .WithMessage("A cidade não pode ser vazia.")
             .MaximumLength(80)

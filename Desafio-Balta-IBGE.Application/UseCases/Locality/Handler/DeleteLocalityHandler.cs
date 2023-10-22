@@ -61,7 +61,7 @@ public class DeleteLocalityHandler : IDeleteLocalityHandler
     {
         _unitOfWork.BeginTransaction();
 
-        var deleted = await _ibgeRepository.RemoveAsync(ibge.IbgeId);
+        var deleted = await _ibgeRepository.RemoveAsync(ibge.IbgeId.Trim());
         if (deleted == false)
             return new DeletedError(StatusCode: HttpStatusCode.InternalServerError,
                                      Message: "Houve uma falha na exclusão do usuário. Por favor, tente novamente mais tarde.");

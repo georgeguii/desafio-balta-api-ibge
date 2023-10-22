@@ -64,7 +64,7 @@ public class UpdateCityLocalityHandler : IUpdateCityLocalityHandler
 
     private async Task<IResponse> UpdateLocality(UpdateCityLocalityRequest request, Ibge ibge, CancellationToken cancellationToken)
     {
-        ibge.UpdateCity(request.City);
+        ibge.UpdateCity(request.City.Trim());
         _unitOfWork.BeginTransaction();
 
         var updated = await _ibgeRepository.UpdateCityAsync(ibge);
