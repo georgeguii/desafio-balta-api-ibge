@@ -1,7 +1,7 @@
 ﻿using Desafio_Balta_IBGE.Domain.Models;
 using Desafio_Balta_IBGE.Domain.ValueObjects;
 
-namespace Desafio_Balta_IBGE.Tests.IbgeModel
+namespace Desafio_Balta_IBGE.Tests.Domain.IbgeModel
 {
     [TestClass]
     public class IbgeDomainTests

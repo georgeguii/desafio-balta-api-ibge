@@ -8,7 +8,7 @@ using Desafio_Balta_IBGE.Domain.Models;
 using Moq;
 using System.Net;
 
-namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
+namespace Desafio_Balta_IBGE.Tests.Application.Handlers.IbgeHandlers
 {
     [TestClass]
     public class CreateLocalityHandlerTests

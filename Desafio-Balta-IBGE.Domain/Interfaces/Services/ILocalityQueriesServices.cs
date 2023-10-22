@@ -2,7 +2,7 @@
 
 namespace Desafio_Balta_IBGE.Domain.Interfaces.Services
 {
-    public interface IQueriesServices
+    public interface ILocalityQueriesServices
     {
         Task<IEnumerable<IbgeDTO>> GetAll(int? pagina = null, int? tamanhoPagina = null);
         Task<IbgeDTO> GetLocalityByIbgeId(string ibgeId);

@@ -6,7 +6,7 @@ using Desafio_Balta_IBGE.Domain.Interfaces.UserRepository;
 using Moq;
 using System.Net;
 
-namespace Desafio_Balta_IBGE.Tests.Application.UserHandlers
+namespace Desafio_Balta_IBGE.Tests.Application.Handlers.UserHandlers
 {
     [TestClass]
     public class CreateUserHandlerTest

@@ -119,7 +119,7 @@ public static class LocalityEndpoints
 
         app.MapGet("localities", async ([FromQuery] int? page,
                                         [FromQuery] int? pageSize,
-                                        [FromServices] IQueriesServices services,
+                                        [FromServices] ILocalityQueriesServices services,
                                         CancellationToken cancellationToken) =>
         {
             var localities = await services.GetAll();
@@ -137,7 +137,7 @@ public static class LocalityEndpoints
             .WithTags("Localities");
 
         app.MapGet("localities/search-by-state/{state}", async ([FromRoute] string state,
-                                                 [FromServices] IQueriesServices services,
+                                                 [FromServices] ILocalityQueriesServices services,
                                                  CancellationToken cancellationToken) =>
         {
                 var localities = await services.GetLocalitiesByState(state);
@@ -153,7 +153,7 @@ public static class LocalityEndpoints
             .WithTags("Localities");
 
         app.MapGet("localities/search-by-ibgeId/{ibgeId}", async ([FromRoute] string ibgeId,
-                                                 [FromServices] IQueriesServices services,
+                                                 [FromServices] ILocalityQueriesServices services,
                                                  CancellationToken cancellationToken) =>
         {
             try
@@ -179,7 +179,7 @@ public static class LocalityEndpoints
 
 
         app.MapGet("localities/search-by-city/{city}", async ([FromRoute] string city,
-                                                              [FromServices] IQueriesServices services,
+                                                              [FromServices] ILocalityQueriesServices services,
                                                               CancellationToken cancellationToken) =>
         {
             var localities = await services.GetLocalityByCity(city);
