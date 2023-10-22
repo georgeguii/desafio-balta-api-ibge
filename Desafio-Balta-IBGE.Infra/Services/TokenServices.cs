@@ -29,9 +29,7 @@ namespace Desafio_Balta_IBGE.Infra.Services
             {
                 Subject = GerarClaims(user),
                 Expires = DateTime.Now.AddHours(4),
-                SigningCredentials = credentials,
-                Issuer = __configuration["Default:Issuer"],
-                Audience = __configuration["Default:Audience"]
+                SigningCredentials = credentials
             };
             var token = handler.CreateToken(tokenDescriptor);
             return handler.WriteToken(token);
