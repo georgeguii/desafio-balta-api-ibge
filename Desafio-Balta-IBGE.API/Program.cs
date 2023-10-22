@@ -23,10 +23,8 @@ builder.Services.AddAuthentication(x =>
     x.TokenValidationParameters = new TokenValidationParameters
     {
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Secrets:JwtPrivateKey"])),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidIssuer = builder.Configuration["Default:Issuer"],
-        ValidAudience = builder.Configuration["Default:Audience"],
+        ValidateIssuer = false,
+        ValidateAudience = false,
         ValidateLifetime = true
     };
 });

@@ -82,7 +82,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             await __unitOfWork.Commit(cancellationToken);
 
             return new UpdatedSuccessfully(StatusCode: HttpStatusCode.OK,
-                                         Message: $"Email do usuário {userDB.Name} atualizado com sucesso!");
+                                         Message: $"Senha do usuário {userDB.Name} atualizada com sucesso!");
         }
     }
 }

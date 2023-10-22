@@ -19,7 +19,7 @@ namespace Desafio_Balta_IBGE.Infra.Migrations
                 table: "User",
                 type: "varchar(30)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: "Administrador");
         }
 
         /// <inheritdoc />
