@@ -3,9 +3,9 @@ using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Response
 {
-    public class DeletedSuccessfully : IResponse
+    public class DeletedLocalitySuccessfully : IResponse
     {
-        public DeletedSuccessfully(HttpStatusCode StatusCode, string Message)
+        public DeletedLocalitySuccessfully(HttpStatusCode StatusCode, string Message)
         {
             this.StatusCode = StatusCode;
             this.Message = Message;

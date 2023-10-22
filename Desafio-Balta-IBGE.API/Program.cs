@@ -5,7 +5,6 @@ using Desafio_Balta_IBGE.API.Endpoints.Users;
 using Desafio_Balta_IBGE.API.Extensions.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

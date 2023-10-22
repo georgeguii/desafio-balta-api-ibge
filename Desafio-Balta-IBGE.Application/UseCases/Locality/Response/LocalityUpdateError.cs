@@ -1,10 +1,11 @@
-﻿using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
-using System.Net;
+﻿using System.Net;
+using Desafio_Balta_IBGE.Domain.Interfaces.Abstractions;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
-public class CreatedSuccessfully : IResponse
+
+public class LocalityUpdateError : IResponse
 {
-    public CreatedSuccessfully(HttpStatusCode StatusCode, string Message)
+    public LocalityUpdateError(HttpStatusCode StatusCode, string Message)
     {
         this.StatusCode = StatusCode;
         this.Message = Message;
@@ -14,3 +15,5 @@ public class CreatedSuccessfully : IResponse
     public string Message { get; set; }
     public Dictionary<string, string> Errors { get; set; }
 }
+
+

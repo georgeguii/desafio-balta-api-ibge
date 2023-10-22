@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Desafio_Balta_IBGE.Application.Abstractions.Locality;
-using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Domain.Interfaces.Services;
 using Desafio_Balta_IBGE.Domain.DTO;
 using Desafio_Balta_IBGE.Shared.Exceptions;
+using Desafio_Balta_IBGE.Application.UseCases.Locality.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Locality.Response;
 
 namespace Desafio_Balta_IBGE.API.Endpoints.Locality;
@@ -27,8 +27,8 @@ public static class LocalityEndpoints
 
             return Results.Created("localities/{id}", response);
         })
-            .Produces(StatusCodes.Status201Created, typeof(CreatedSuccessfully))
-            .Produces(StatusCodes.Status400BadRequest, typeof(InvalidRequest))
+            .Produces(StatusCodes.Status201Created, typeof(CreatedLocalitySuccessfully))
+            .Produces(StatusCodes.Status400BadRequest, typeof(LocalityInvalidRequest))
             .Produces(StatusCodes.Status409Conflict, typeof(CodeAlreadyRegistered))
             .WithOpenApi(operation => new(operation)
             {
@@ -55,7 +55,7 @@ public static class LocalityEndpoints
             return Results.Ok(response);
         })
             .Produces(StatusCodes.Status200OK, typeof(UpdateCityLocalityResponse))
-            .Produces(StatusCodes.Status400BadRequest, typeof(InvalidRequest))
+            .Produces(StatusCodes.Status400BadRequest, typeof(LocalityInvalidRequest))
             .Produces(StatusCodes.Status404NotFound, typeof(CodeNotFound))
             .WithOpenApi(operation => new(operation)
             {
@@ -82,7 +82,7 @@ public static class LocalityEndpoints
             return Results.Ok(response);
         })
             .Produces(StatusCodes.Status200OK, typeof(LocalityDTO))
-            .Produces(StatusCodes.Status400BadRequest, typeof(InvalidRequest))
+            .Produces(StatusCodes.Status400BadRequest, typeof(LocalityInvalidRequest))
             .Produces(StatusCodes.Status404NotFound, typeof(CodeNotFound))
             .WithOpenApi(operation => new(operation)
             {
@@ -106,8 +106,8 @@ public static class LocalityEndpoints
 
             return Results.Ok(response);
         })
-            .Produces(StatusCodes.Status200OK, typeof(DeletedSuccessfully))
-            .Produces(StatusCodes.Status400BadRequest, typeof(InvalidRequest))
+            .Produces(StatusCodes.Status200OK, typeof(DeletedLocalitySuccessfully))
+            .Produces(StatusCodes.Status400BadRequest, typeof(LocalityInvalidRequest))
             .Produces(StatusCodes.Status404NotFound, typeof(CodeNotFound))
             .WithOpenApi(operation => new(operation)
             {

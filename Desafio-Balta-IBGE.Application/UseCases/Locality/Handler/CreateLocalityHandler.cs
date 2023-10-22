@@ -27,7 +27,7 @@ public class CreateLocalityHandler : ICreateLocalityHandler
         var result = request.Validar();
 
         if (!result.IsValid)
-            return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
+            return new LocalityInvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                       Message: "Requisição inválida. Por favor, valide os dados informados.",
                                       Errors: result.Errors
                                                     .GroupBy(error => error.PropertyName)
@@ -76,7 +76,7 @@ public class CreateLocalityHandler : ICreateLocalityHandler
         await _ibgeRepository.AddAsync(locality);
         await _unitOfWork.Commit(cancellationToken);
 
-        return new CreatedSuccessfully(StatusCode: HttpStatusCode.Created,
+        return new CreatedLocalitySuccessfully(StatusCode: HttpStatusCode.Created,
                                             Message: "Localidade criada com sucesso.");
     }
 }

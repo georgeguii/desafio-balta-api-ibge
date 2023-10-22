@@ -26,7 +26,7 @@ public class UpdateCityLocalityHandler : IUpdateCityLocalityHandler
 
         var result = request.Validar();
         if (!result.IsValid)
-            return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
+            return new LocalityInvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                       Message: "Requisição inválida. Por favor, valide os dados informados.",
                                       Errors: result.Errors
                                                     .GroupBy(error => error.PropertyName)
@@ -69,12 +69,12 @@ public class UpdateCityLocalityHandler : IUpdateCityLocalityHandler
 
         var updated = await _ibgeRepository.UpdateCityAsync(ibge);
         if (updated == false)
-            return new UpdateError(StatusCode: HttpStatusCode.InternalServerError,
+            return new LocalityUpdateError(StatusCode: HttpStatusCode.InternalServerError,
                                      Message: "Houve um erro ao atualizar a cidade.");
 
         await _unitOfWork.Commit(cancellationToken);
 
-        return new UpdateSuccessfully(StatusCode: HttpStatusCode.OK,
+        return new LocalityUpdateSuccessfully(StatusCode: HttpStatusCode.OK,
                                       Message: $"Cidade com o código {ibge.IbgeId} atualizada com sucesso!");
     }
 }

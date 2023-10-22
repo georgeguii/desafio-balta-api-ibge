@@ -26,7 +26,7 @@ public class DeleteLocalityHandler : IDeleteLocalityHandler
         var result = request.Validar();
 
         if (!result.IsValid)
-            return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
+            return new LocalityInvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                       Message: "Requisição inválida. Por favor, valide os dados informados.",
                                       Errors: result.Errors
                                                     .GroupBy(error => error.PropertyName)
@@ -68,7 +68,7 @@ public class DeleteLocalityHandler : IDeleteLocalityHandler
 
         await _unitOfWork.Commit(cancellationToken);
 
-        return new DeletedSuccessfully(StatusCode: HttpStatusCode.OK,
+        return new DeletedLocalitySuccessfully(StatusCode: HttpStatusCode.OK,
                             Message: "Localidade removida com sucesso.");
     }
 }

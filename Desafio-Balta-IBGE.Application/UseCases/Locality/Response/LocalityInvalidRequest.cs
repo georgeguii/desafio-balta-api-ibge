@@ -3,9 +3,9 @@ using System.Net;
 
 namespace Desafio_Balta_IBGE.Application.UseCases.Locality.Response
 {
-    public class InvalidRequest : IResponse
+    public class LocalityInvalidRequest : IResponse
     {
-        public InvalidRequest(HttpStatusCode StatusCode, string Message, Dictionary<string, string> Errors)
+        public LocalityInvalidRequest(HttpStatusCode StatusCode, string Message, Dictionary<string, string> Errors)
         {
             this.StatusCode = StatusCode;
             this.Message = Message;

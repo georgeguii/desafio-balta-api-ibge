@@ -13,7 +13,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Login
             app.MapGet("health-check", () => 
                 Results.Ok("Estou viva :)")
             )
-                .Produces(StatusCodes.Status200OK, typeof(string))
+                .Produces(StatusCodes.Status200OK)
                 .WithOpenApi(operation => new(operation)
                 {
                     Summary = "Verifica se a aplicação está funcionado",

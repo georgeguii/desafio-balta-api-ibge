@@ -46,7 +46,7 @@ namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
 
             #region Assert
 
-            Assert.IsInstanceOfType(response, typeof(InvalidRequest));
+            Assert.IsInstanceOfType(response, typeof(LocalityInvalidRequest));
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.AreEqual("Requisição inválida. Por favor, valide os dados informados.", response.Message);
             Assert.IsTrue(response.Errors.Count() > 0);
@@ -75,7 +75,7 @@ namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
 
             #region Assert
 
-            Assert.IsInstanceOfType(response, typeof(InvalidRequest));
+            Assert.IsInstanceOfType(response, typeof(LocalityInvalidRequest));
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.AreEqual("Requisição inválida. Por favor, valide os dados informados.", response.Message);
             Assert.IsTrue(response.Errors.Count() > 0);
@@ -104,7 +104,7 @@ namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
 
             #region Assert
 
-            Assert.IsInstanceOfType(response, typeof(InvalidRequest));
+            Assert.IsInstanceOfType(response, typeof(LocalityInvalidRequest));
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.AreEqual("Requisição inválida. Por favor, valide os dados informados.", response.Message);
             Assert.IsTrue(response.Errors.Count() > 0);
@@ -166,7 +166,7 @@ namespace Desafio_Balta_IBGE.Tests.Application.IbgeHandlers
 
             #region Assert
 
-            Assert.IsInstanceOfType(response, typeof(CreatedSuccessfully));
+            Assert.IsInstanceOfType(response, typeof(CreatedLocalitySuccessfully));
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             Assert.AreEqual("Localidade criada com sucesso.", response.Message);
 
