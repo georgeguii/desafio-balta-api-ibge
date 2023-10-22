@@ -45,9 +45,9 @@ public static class LocalityEndpoints
         }).RequireAuthorization("Administrador");
 
         app.MapPut("localities/{ibgeId}/update-state", async ([FromRoute] string ibgeId,
-                                                      [FromBody] UpdateStateLocalityDTO requestDto,
-                                                      [FromServices] IUpdateStateLocalityHandler handler,
-                                                      CancellationToken cancellationToken) =>
+                                                              [FromBody] UpdateStateLocalityDTO requestDto,
+                                                              [FromServices] IUpdateStateLocalityHandler handler,
+                                                              CancellationToken cancellationToken) =>
         {
             var request = new UpdateStateLocalityRequest(ibgeId, requestDto.state);
             var response = await handler.Handle(request, cancellationToken);
@@ -112,8 +112,8 @@ public static class LocalityEndpoints
 
 
         app.MapGet("localities/search-by-city/{city}", async ([FromRoute] string city,
-                                        [FromServices] IQueriesServices services,
-                                        CancellationToken cancellationToken) =>
+                                                              [FromServices] IQueriesServices services,
+                                                              CancellationToken cancellationToken) =>
         {
             var localities = await services.GetLocalityByCity(city);
             return Results.Ok(localities);
