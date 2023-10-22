@@ -32,7 +32,7 @@ public static class LocalityEndpoints
             .Produces(StatusCodes.Status409Conflict, typeof(CodeAlreadyRegistered))
             .WithOpenApi(operation => new(operation)
             {
-                Summary = "Criar uma nova localidade",
+                Summary = "Registro de uma nova localidade.",
                 Description = "Permite a inserção de uma nova localidade no sistema.",
             })
             .RequireAuthorization("Administrador")
@@ -111,7 +111,7 @@ public static class LocalityEndpoints
             .Produces(StatusCodes.Status404NotFound, typeof(CodeNotFound))
             .WithOpenApi(operation => new(operation)
             {
-                Summary = "Apagar localidade",
+                Summary = "Excluir uma localidade",
                 Description = "Permite apagar uma localidade existente com base no IBGE ID.",
             })
             .RequireAuthorization("Administrador")
@@ -129,7 +129,7 @@ public static class LocalityEndpoints
             .Produces(StatusCodes.Status200OK, typeof(List<LocalityDTO>))
             .WithOpenApi(operation => new(operation)
             {
-                Summary = "Listar localidades.",
+                Summary = "Listar todas as localidades.",
                 Description = "Permite listar todas as localidades existentes." +
                 "Também é possível utilizar este endpoint de forma páginada, passando os parametros page e pageSize",
             })

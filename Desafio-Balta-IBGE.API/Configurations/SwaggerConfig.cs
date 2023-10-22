@@ -12,7 +12,8 @@ public static class SwaggerConfig
             {
                 Version = "v1",
                 Title = "Desafio IBGE - Balta IO",
-                Description = "<h3>API para gerenciamente de localidades</h3>",
+                Description = "<h4>API desenvolvida para o desafio do balta.io," +
+                "o objetivo deste projeto é fornecer funcionalidades de cadastro de usuários e um conjunto completo de operações CRUD para localidades</h4>",
             });
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
