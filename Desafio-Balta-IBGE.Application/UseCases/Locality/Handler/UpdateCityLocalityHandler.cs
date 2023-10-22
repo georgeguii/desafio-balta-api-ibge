@@ -28,7 +28,9 @@ public class UpdateCityLocalityHandler : IUpdateCityLocalityHandler
         if (!result.IsValid)
             return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                       Message: "Requisição inválida. Por favor, valide os dados informados.",
-                                      Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                                      Errors: result.Errors
+                                                    .GroupBy(error => error.PropertyName)
+                                                    .ToDictionary(group => group.Key, group => group.First().ErrorMessage));
 
         #endregion
 
@@ -62,7 +64,7 @@ public class UpdateCityLocalityHandler : IUpdateCityLocalityHandler
 
     private async Task<IResponse> UpdateLocality(UpdateCityLocalityRequest request, Ibge ibge, CancellationToken cancellationToken)
     {
-        ibge.UpdateCity(request.City);
+        ibge.UpdateCity(request.City.Trim());
         _unitOfWork.BeginTransaction();
 
         var updated = await _ibgeRepository.UpdateCityAsync(ibge);

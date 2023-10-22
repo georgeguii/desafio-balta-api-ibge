@@ -118,7 +118,7 @@ namespace Desafio_Balta_IBGE.Infra.Data.Mapping
 
             builder.Property(x => x.Role)
                 .HasColumnName("Role")
-                .HasColumnType("varchar")
+                .HasColumnType("varchar(30)")
                 .IsRequired(true);
         }
     }

@@ -8,6 +8,8 @@ public class DeleteLocalityValidator : AbstractValidator<DeleteLocalityRequest>
     public DeleteLocalityValidator()
     {
         RuleFor(x => x.IbgeId)
+            .NotNull()
+                .WithMessage("O código do IBGE não pode ser nulo.")
             .NotEmpty()
                 .WithMessage("O código do IBGE não pode ser vazio.")
             .Length(7, 7)

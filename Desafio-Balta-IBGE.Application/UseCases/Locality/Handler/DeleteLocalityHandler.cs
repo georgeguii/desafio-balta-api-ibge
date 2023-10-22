@@ -28,7 +28,9 @@ public class DeleteLocalityHandler : IDeleteLocalityHandler
         if (!result.IsValid)
             return new InvalidRequest(StatusCode: HttpStatusCode.BadRequest,
                                       Message: "Requisição inválida. Por favor, valide os dados informados.",
-                                      Errors: result.Errors.ToDictionary(error => error.PropertyName, error => error.ErrorMessage));
+                                      Errors: result.Errors
+                                                    .GroupBy(error => error.PropertyName)
+                                                    .ToDictionary(group => group.Key, group => group.First().ErrorMessage));
         #endregion
 
         try
@@ -59,7 +61,7 @@ public class DeleteLocalityHandler : IDeleteLocalityHandler
     {
         _unitOfWork.BeginTransaction();
 
-        var deleted = await _ibgeRepository.RemoveAsync(ibge.IbgeId);
+        var deleted = await _ibgeRepository.RemoveAsync(ibge.IbgeId.Trim());
         if (deleted == false)
             return new DeletedError(StatusCode: HttpStatusCode.InternalServerError,
                                      Message: "Houve uma falha na exclusão do usuário. Por favor, tente novamente mais tarde.");

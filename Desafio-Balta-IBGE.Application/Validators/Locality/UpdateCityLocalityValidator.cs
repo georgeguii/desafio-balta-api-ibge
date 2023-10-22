@@ -8,6 +8,8 @@ public class UpdateCityLocalityValidator : AbstractValidator<UpdateCityLocalityR
     public UpdateCityLocalityValidator()
     {
         RuleFor(x => x.IbgeId)
+            .NotNull()
+                .WithMessage("O código do IBGE não pode ser nulo.")
             .NotEmpty()
                 .WithMessage("O código do IBGE não pode ser vazio.")
             .Length(7, 7)
@@ -16,6 +18,8 @@ public class UpdateCityLocalityValidator : AbstractValidator<UpdateCityLocalityR
                 .WithMessage("O código do IBGE deve possuir somente números.");
 
         RuleFor(l => l.City)
+            .NotNull()
+                .WithMessage("A cidade não pode ser nulo.")
             .NotEmpty()
                 .WithMessage("A cidade não pode ser vazia.")
             .MaximumLength(80)

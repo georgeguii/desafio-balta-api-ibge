@@ -70,7 +70,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
 
                 await Save(userDB, cancellationToken);
 
-                return new ActivatedSuccess(StatusCode: HttpStatusCode.BadRequest,
+                return new ActivatedSuccess(StatusCode: HttpStatusCode.OK,
                                                Message: $"{userDB.Name}, sua conta foi ativada com sucesso!");
             }
             catch (Exception ex)

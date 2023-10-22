@@ -18,16 +18,20 @@ namespace Desafio_Balta_IBGE.Infra.Services
             _ibgeContext = ibgeContext;
         }
 
-        public async Task<IEnumerable<IbgeDTO>> GetAll(int pagina = 1, int tamanhoPagina = 50)
+        public async Task<IEnumerable<IbgeDTO>> GetAll(int? pagina = null, int? tamanhoPagina = null)
         {
             try
             {
-                return await _ibgeContext
-                             .Ibge
-                             .Skip((pagina - 1) * tamanhoPagina)
-                             .Take(tamanhoPagina)
-                             .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
-                             .ToListAsync();
+                var query = _ibgeContext.Ibge.AsQueryable();
+
+                if (pagina != null && tamanhoPagina != null)
+                {
+                    query = query.Skip((pagina.Value - 1) * tamanhoPagina.Value)
+                                 .Take(tamanhoPagina.Value);
+                }
+
+                return await query.Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
+                                 .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -36,34 +40,20 @@ namespace Desafio_Balta_IBGE.Infra.Services
         }
 
         public async Task<IbgeDTO> GetLocalityByIbgeId(string ibgeId)
-        {
-            try
-            {
-                var ibge = await _ibgeContext
-                                .Ibge
-                                .AsQueryable()
-                                .Where(_localityQueries.GetByIbgeId(ibgeId.Trim().ToUpper()))
-                                .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
-                                .FirstOrDefaultAsync() ?? throw new NotFoundLocalityException($"Localidade não encontrada.");
-                return ibge;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Falha ao buscar localidade pelo Id do Ibge. Detalhe: {ex.Message}");
-            }
-        }
+            => await _ibgeContext
+                        .Ibge
+                        .AsQueryable()
+                        .Where(_localityQueries.GetByIbgeId(ibgeId.Trim().ToUpper()))
+                        .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
+                        .FirstOrDefaultAsync() ?? throw new NotFoundLocalityException($"Localidade não encontrada.");
 
-        public async Task<IbgeDTO> GetLocalityByCity(string city)
-        {
-            var ibge = await _ibgeContext
-                                .Ibge
-                                .AsQueryable()
-                                .Where(_localityQueries.GetByCity(city.Trim().ToUpper()))
-                                .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
-                                .FirstOrDefaultAsync() ?? throw new NotFoundLocalityException($"Localidade não encontrada.");
-
-            return ibge;
-        }
+        public async Task<IEnumerable<IbgeDTO>> GetLocalityByCity(string city)
+            => await _ibgeContext
+                        .Ibge
+                        .AsQueryable()
+                        .Where(_localityQueries.GetByCity(city.Trim().ToUpper()))
+                        .Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))
+                        .ToListAsync();
 
         public async Task<IEnumerable<IbgeDTO>> GetLocalitiesByState(string state)
             => await _ibgeContext
