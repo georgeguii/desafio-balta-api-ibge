@@ -9,10 +9,14 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Response
         {
             this.StatusCode = StatusCode;
             this.Message = Message;
+            this.ActivationCode = ActivationCode;
+            this.ExpireDate = ExpireDate;
         }
 
         public HttpStatusCode StatusCode { get; set; }
         public string Message { get; set; }
+        public string ActivationCode { get; set; }
+        public string ExpireDate { get; set; }
         public Dictionary<string, string> Errors { get; set; }
     }
     

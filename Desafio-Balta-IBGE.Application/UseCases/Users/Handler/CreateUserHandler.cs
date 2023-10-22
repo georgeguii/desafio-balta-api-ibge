@@ -78,7 +78,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             await __unitOfWork.Commit(cancellationToken);
 
             return new CreatedSuccessfully(StatusCode: HttpStatusCode.Created,
-                                          Message: "Usuário criado com sucesso. Por favor, verifique seu e-mail para ativar sua conta.",
+                                          Message: "Usuário criado com sucesso. Lembre-se de ativar sua conta.",
                                           ActivationCode: user.Email.VerifyEmail.Code!,
                                           ExpireDate: user.Email.VerifyEmail.ExpireDate.ToString()!);
         }
