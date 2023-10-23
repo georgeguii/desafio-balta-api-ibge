@@ -59,10 +59,15 @@ Este é um projeto básico onde é possível realizar operações de CRUD para a
  - JWT e Bearer Authentication
  - Azure
 
+## Conceitos
+ - SOLID
+ - Reflexion
+ - Clean Code
+ - Orientação a objetos
+ - Domain Driven Design (DDD)
+
 ## Arquitetura / Design Patterns
  - RESTful
- - SOLID
- - Domain Driven Design (DDD)
  - Repository Pattern
  - Clean Architecture
  - Command Query Responsibility Segregation (CQRS)
