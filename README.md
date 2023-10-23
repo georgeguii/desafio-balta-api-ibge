@@ -29,7 +29,7 @@ Este é um projeto básico onde é possível realizar operações de CRUD para a
  promovendo a colaboração e inovação na comunidade de tecnologia.
 </p>
 
- ### Features
+ ### Funcionalidades
 
 - [X] Listar localidades
 - [X] Adicionar localidades
@@ -61,6 +61,7 @@ Este é um projeto básico onde é possível realizar operações de CRUD para a
 
 ## Arquitetura / Design Patterns
  - RESTful
+ - SOLID
  - Domain Driven Design (DDD)
  - Repository Pattern
  - Clean Architecture
