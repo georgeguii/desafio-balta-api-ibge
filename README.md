@@ -69,6 +69,7 @@ Este é um projeto básico onde é possível realizar operações de CRUD para a
  - Unit of Work (UoW)
  - Design By Contract
  - Injeção de dependência
+ - Notification Pattern
 
 <hr>
  
