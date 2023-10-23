@@ -3,6 +3,7 @@ using Desafio_Balta_IBGE.Application.UseCases.Users.Request;
 using Desafio_Balta_IBGE.Application.UseCases.Users.Response;
 using Desafio_Balta_IBGE.Domain.DTO;
 using Desafio_Balta_IBGE.Domain.Interfaces.Services;
+using Desafio_Balta_IBGE.Domain.Models;
 using Desafio_Balta_IBGE.Shared.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -13,7 +14,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
     {
         public static void AddUserRoutes(this WebApplication app)
         {
-            app.MapPost("users", async ([FromBody]CreateUserRequest request, 
+            app.MapPost("users", async ([FromBody] CreateUserRequest request,
                                                     [FromServices] ICreateUserHandler handler,
                                                     CancellationToken cancellationToken) =>
             {
@@ -160,10 +161,10 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
             app.MapGet("users", async ([FromServices] IUserQueriesServices services) =>
             {
                 var users = await services.GetAllAsync();
-                
+
                 return Results.Ok(users);
 
-            })
+            }).Produces(StatusCodes.Status200OK, typeof(IEnumerable<UserDTO>))
               .WithOpenApi(operation => new(operation)
               {
                   Summary = "Retorna todos os usuários.",
@@ -171,6 +172,64 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               })
               .RequireAuthorization("Administrador")
               .WithTags("Users");
+
+            app.MapGet("users/{id}", async ([FromRoute] int id,
+                                            [FromServices] IUserQueriesServices services) =>
+            {
+                var user = await services.GetBydIdAsync(id);
+
+                if (user.StatusCode == HttpStatusCode.NotFound)
+                    return Results.NotFound(user.ErrorMessage);
+
+                return Results.Ok(user);
+
+            }).Produces(StatusCodes.Status200OK, typeof(UserDTO))
+              .Produces(StatusCodes.Status404NotFound, typeof(UserDTO))
+              .WithOpenApi(operation => new(operation)
+              {
+                  Summary = "Busca um usuário.",
+                  Description = "Endpoint para buscar um usuário específico.",
+              })
+              .RequireAuthorization("Administrador")
+              .WithTags("Users");
+
+            app.MapGet("user/search-by-email/{email}", async ([FromRoute] string email,
+                                                 [FromServices] IUserQueriesServices services,
+                                                 CancellationToken cancellationToken) =>
+            {
+                var user = await services.GetByEmailAsync(email);
+                if (user.StatusCode == HttpStatusCode.NotFound)
+                    return Results.NotFound(user.ErrorMessage);
+
+                return Results.Ok(user);
+            }).Produces(StatusCodes.Status200OK, typeof(UserDTO))
+                .Produces(StatusCodes.Status404NotFound, typeof(UserDTO))
+                .WithOpenApi(operation => new(operation)
+                {
+                    Summary = "Buscar usuário por email.",
+                    Description = "Permite buscar todas o usuário com o email (exato) passado como parâmetro",
+                })
+                .RequireAuthorization("Administrador")
+                .WithTags("Users");
+
+            app.MapGet("users/search-by-name/{name}", async ([FromRoute] string name,
+                                                              [FromServices] IUserQueriesServices services,
+                                                              CancellationToken cancellationToken) =>
+            {
+                var users = await services.GetByNameAsync(name);
+                if (users.StatusCode == HttpStatusCode.NotFound)
+                    return Results.NotFound(users.ErrorMessage);
+
+                return Results.Ok(users);
+            }).Produces(StatusCodes.Status200OK, typeof(List<UserDTO>))
+                .Produces(StatusCodes.Status404NotFound, typeof(List<UserDTO>))
+                .WithOpenApi(operation => new(operation)
+                {
+                    Summary = "Buscar localidades por cidade.",
+                    Description = "Permite realizar uma busca em todas os usuários com o termo de nome (aproximado) passado como parâmetro",
+                })
+                .RequireAuthorization("Administrador")
+                .WithTags("Users");
         }
     }
 }

@@ -18,16 +18,16 @@ namespace Desafio_Balta_IBGE.Infra.Services
             _ibgeContext = ibgeContext;
         }
 
-        public async Task<IEnumerable<IbgeDTO>> GetAll(int? pagina = null, int? tamanhoPagina = null)
+        public async Task<IEnumerable<IbgeDTO>> GetAll(int? page = null, int? pageSize = null)
         {
             try
             {
                 var query = _ibgeContext.Ibge.AsQueryable();
 
-                if (pagina != null && tamanhoPagina != null)
+                if (page.HasValue && pageSize.HasValue && page > 0 && pageSize > 0)
                 {
-                    query = query.Skip((pagina.Value - 1) * tamanhoPagina.Value)
-                                 .Take(tamanhoPagina.Value);
+                    query = query.Skip((page.Value - 1) * pageSize.Value)
+                                 .Take(pageSize.Value);
                 }
 
                 return await query.Select(x => new IbgeDTO(x.IbgeId, x.City, x.State))

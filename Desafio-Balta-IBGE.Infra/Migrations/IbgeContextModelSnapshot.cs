@@ -59,7 +59,8 @@ namespace Desafio_Balta_IBGE.Infra.Migrations
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("varchar(30)")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar")
                         .HasColumnName("Role");
 
                     b.HasKey("UserId");
@@ -69,7 +70,7 @@ namespace Desafio_Balta_IBGE.Infra.Migrations
 
             modelBuilder.Entity("Desafio_Balta_IBGE.Domain.Models.User", b =>
                 {
-                    b.OwnsOne("Desafio_Balta_IBGE.Domain.ValueObjects.Email", "Email", b1 =>
+                    b.OwnsOne("Desafio_Balta_IBGE.Domain.Models.User.Email#Desafio_Balta_IBGE.Domain.ValueObjects.Email", "Email", b1 =>
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
@@ -82,12 +83,12 @@ namespace Desafio_Balta_IBGE.Infra.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("User");
+                            b1.ToTable("User", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
 
-                            b1.OwnsOne("Desafio_Balta_IBGE.Domain.ValueObjects.VerifyEmail", "VerifyEmail", b2 =>
+                            b1.OwnsOne("Desafio_Balta_IBGE.Domain.Models.User.Email#Desafio_Balta_IBGE.Domain.ValueObjects.Email.VerifyEmail#Desafio_Balta_IBGE.Domain.ValueObjects.VerifyEmail", "VerifyEmail", b2 =>
                                 {
                                     b2.Property<int>("EmailUserId")
                                         .HasColumnType("int");
@@ -107,7 +108,7 @@ namespace Desafio_Balta_IBGE.Infra.Migrations
 
                                     b2.HasKey("EmailUserId");
 
-                                    b2.ToTable("User");
+                                    b2.ToTable("User", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("EmailUserId");
@@ -117,7 +118,7 @@ namespace Desafio_Balta_IBGE.Infra.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("Desafio_Balta_IBGE.Domain.ValueObjects.Password", "Password", b1 =>
+                    b.OwnsOne("Desafio_Balta_IBGE.Domain.Models.User.Password#Desafio_Balta_IBGE.Domain.ValueObjects.Password", "Password", b1 =>
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
@@ -143,7 +144,7 @@ namespace Desafio_Balta_IBGE.Infra.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("User");
+                            b1.ToTable("User", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

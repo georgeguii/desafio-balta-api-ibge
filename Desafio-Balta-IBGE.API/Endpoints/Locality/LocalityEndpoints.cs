@@ -122,7 +122,7 @@ public static class LocalityEndpoints
                                         [FromServices] ILocalityQueriesServices services,
                                         CancellationToken cancellationToken) =>
         {
-            var localities = await services.GetAll();
+            var localities = await services.GetAll(page, pageSize);
 
             return Results.Ok(localities);
         })

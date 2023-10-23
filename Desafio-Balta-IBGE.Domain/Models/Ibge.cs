@@ -12,11 +12,11 @@ public sealed class Ibge : Entity, IValidate
     [IfNull(ErrorMessage = "Id inválido.")]
     public string IbgeId { get; private set; } = string.Empty;
 
-    [IfNull(ErrorMessage = "Cidade inválida.")]
-    public string City { get; private set; } = string.Empty;
-
     [IfNull(ErrorMessage = "Estado inválido.")]
     public string State { get; private set; } = string.Empty;
+
+    [IfNull(ErrorMessage = "Cidade inválida.")]
+    public string City { get; private set; } = string.Empty;
 
     public Ibge()
     {
@@ -25,8 +25,8 @@ public sealed class Ibge : Entity, IValidate
     public Ibge(string ibgeId ,string city, string state)
     {
         IbgeId = ibgeId;
-        City = city;
         State = state;
+        City = city;
         Validate();
     }
 
