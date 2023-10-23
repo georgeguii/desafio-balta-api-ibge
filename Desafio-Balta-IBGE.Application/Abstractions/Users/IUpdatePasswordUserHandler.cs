@@ -5,6 +5,6 @@ namespace Desafio_Balta_IBGE.Application.Abstractions.Users
 {
     public interface IUpdatePasswordUserHandler
     {
-        Task<IResponse> Handle(UpdatePasswordUserRequest request, CancellationToken cancellationToken);
+        Task<IResponse> Handle(int id, UpdatePasswordUserRequest request, CancellationToken cancellationToken);
     }
 }

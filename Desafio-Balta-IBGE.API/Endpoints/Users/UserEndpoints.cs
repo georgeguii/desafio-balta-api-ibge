@@ -12,9 +12,11 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
 {
     public static class UserEndpoints
     {
-        public static void AddUserRoutes(this WebApplication app)
+        public static void AddUserRoutes(this RouteGroupBuilder route)
         {
-            app.MapPost("users", async ([FromBody] CreateUserRequest request,
+            var usersRote = route.MapGroup("users");
+
+            usersRote.MapPost("/", async ([FromBody] CreateUserRequest request,
                                                     [FromServices] ICreateUserHandler handler,
                                                     CancellationToken cancellationToken) =>
             {
@@ -34,7 +36,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               })
               .WithTags("Users");
 
-            app.MapPut("users/activate-user", async ([FromBody] ActivateUserRequest request,
+            usersRote.MapPut("/activate-user", async ([FromBody] ActivateUserRequest request,
                                                     [FromServices] IActivateUserHandler handler,
                                                     CancellationToken cancellationToken) =>
             {
@@ -58,7 +60,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               })
               .WithTags("Users");
 
-            app.MapPut("users/update-name", async ([FromBody] UpdateNameUserRequest request,
+            usersRote.MapPut("/update-name", async ([FromBody] UpdateNameUserRequest request,
                                                    [FromServices] IUpdateNameUserHandler handler,
                                                    CancellationToken cancellationToken) =>
             {
@@ -83,7 +85,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               .RequireAuthorization("Administrador")
               .WithTags("Users");
 
-            app.MapPut("users/update-email", async ([FromBody] UpdateEmailUserRequest request,
+            usersRote.MapPut("/update-email", async ([FromBody] UpdateEmailUserRequest request,
                                                     [FromServices] IUpdateEmailHandler handler,
                                                     CancellationToken cancellationToken) =>
             {
@@ -108,12 +110,12 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               .RequireAuthorization("Administrador")
               .WithTags("Users");
 
-            app.MapPut("users/{id}/update-password", async ([FromRoute] int id,
+            usersRote.MapPut("/{id}/update-password", async ([FromRoute] int id,
                                                        [FromBody] UpdatePasswordUserRequest request,
                                                        [FromServices] IUpdatePasswordUserHandler handler,
                                                        CancellationToken cancellationToken) =>
             {
-                var response = await handler.Handle(request, cancellationToken);
+                var response = await handler.Handle(id, request, cancellationToken);
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                     return Results.BadRequest(response);
@@ -133,7 +135,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               .RequireAuthorization("Administrador")
               .WithTags("Users");
 
-            app.MapDelete("users/{id}", async ([FromRoute] int id,
+            usersRote.MapDelete("/{id}", async ([FromRoute] int id,
                                                [FromServices] IDeleteUserHandler handler,
                                                CancellationToken cancellationToken) =>
             {
@@ -158,7 +160,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               .RequireAuthorization("Administrador")
               .WithTags("Users");
 
-            app.MapGet("users", async ([FromServices] IUserQueriesServices services) =>
+            usersRote.MapGet("/", async ([FromServices] IUserQueriesServices services) =>
             {
                 var users = await services.GetAllAsync();
 
@@ -173,7 +175,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               .RequireAuthorization("Administrador")
               .WithTags("Users");
 
-            app.MapGet("users/{id}", async ([FromRoute] int id,
+            usersRote.MapGet("/{id}", async ([FromRoute] int id,
                                             [FromServices] IUserQueriesServices services) =>
             {
                 var user = await services.GetBydIdAsync(id);
@@ -193,7 +195,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
               .RequireAuthorization("Administrador")
               .WithTags("Users");
 
-            app.MapGet("user/search-by-email/{email}", async ([FromRoute] string email,
+            usersRote.MapGet("/search-by-email/{email}", async ([FromRoute] string email,
                                                  [FromServices] IUserQueriesServices services,
                                                  CancellationToken cancellationToken) =>
             {
@@ -212,7 +214,7 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Users
                 .RequireAuthorization("Administrador")
                 .WithTags("Users");
 
-            app.MapGet("users/search-by-name/{name}", async ([FromRoute] string name,
+            usersRote.MapGet("/search-by-name/{name}", async ([FromRoute] string name,
                                                               [FromServices] IUserQueriesServices services,
                                                               CancellationToken cancellationToken) =>
             {

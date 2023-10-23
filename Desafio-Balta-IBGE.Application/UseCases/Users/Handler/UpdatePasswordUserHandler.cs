@@ -26,7 +26,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             __unitOfWork = unitOfWork;
         }
 
-        public async Task<IResponse> Handle(UpdatePasswordUserRequest request, CancellationToken cancellationToken)
+        public async Task<IResponse> Handle(int id, UpdatePasswordUserRequest request, CancellationToken cancellationToken)
         {
             #region Validações
 
@@ -42,7 +42,7 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Handler
             {
                 #region Buscar usuário
 
-                var userDB = await __userRepository.GetByEmailAsync(request.Email);
+                var userDB = await __userRepository.GetByIdAsync(id);
                 if (userDB is null)
                     return new NotFoundUser(StatusCode: HttpStatusCode.BadRequest,
                                             Message: "Usuário informado não está cadastrado.");

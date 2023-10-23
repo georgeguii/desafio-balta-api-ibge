@@ -36,9 +36,11 @@ builder.Services.AddAuthorization(x =>
 
 var app = builder.Build();
 
-app.AddUserRoutes();
-app.AddLoginRoutes();
-app.AddLocalityRoutes();
+var mapGroup = app.MapGroup("v1");
+
+mapGroup.AddUserRoutes();
+mapGroup.AddLoginRoutes();
+mapGroup.AddLocalityRoutes();
 
 app.UseSwaggerConfiguration(app.Environment);
 

@@ -5,7 +5,6 @@ namespace Desafio_Balta_IBGE.Application.UseCases.Users.Request
 {
     public class UpdatePasswordUserRequest
     {
-        public string Email{ get; set; }
         public string Password { get; set; }
 
         public ValidationResult Validar()

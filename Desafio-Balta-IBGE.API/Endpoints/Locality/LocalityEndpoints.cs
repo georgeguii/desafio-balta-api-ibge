@@ -11,9 +11,11 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Locality;
 
 public static class LocalityEndpoints
 {
-    public static void AddLocalityRoutes(this WebApplication app)
+    public static void AddLocalityRoutes(this RouteGroupBuilder route)
     {
-        app.MapPost("localities", async ([FromBody] CreateLocalityRequest request,
+        var localitiesRoute = route.MapGroup("localities");
+
+        localitiesRoute.MapPost("/", async ([FromBody] CreateLocalityRequest request,
                                          [FromServices] ICreateLocalityHandler handler,
                                          CancellationToken cancellationToken) =>
         {
@@ -38,7 +40,7 @@ public static class LocalityEndpoints
             .RequireAuthorization("Administrador")
             .WithTags("Localities");
 
-        app.MapPut("localities/{ibgeId}/update-city", async ([FromRoute] string ibgeId,
+        localitiesRoute.MapPut("/{ibgeId}/update-city", async ([FromRoute] string ibgeId,
                                                       [FromBody] UpdateCityLocalityDTO requestDto,
                                                       [FromServices] IUpdateCityLocalityHandler handler,
                                                       CancellationToken cancellationToken) =>
@@ -65,7 +67,7 @@ public static class LocalityEndpoints
             .RequireAuthorization("Administrador")
             .WithTags("Localities");
 
-        app.MapPut("localities/{ibgeId}/update-state", async ([FromRoute] string ibgeId,
+        localitiesRoute.MapPut("/{ibgeId}/update-state", async ([FromRoute] string ibgeId,
                                                               [FromBody] UpdateStateLocalityDTO requestDto,
                                                               [FromServices] IUpdateStateLocalityHandler handler,
                                                               CancellationToken cancellationToken) =>
@@ -92,7 +94,7 @@ public static class LocalityEndpoints
             .RequireAuthorization("Administrador")
             .WithTags("Localities");
 
-        app.MapDelete("localities", async ([FromBody] DeleteLocalityRequest request,
+        localitiesRoute.MapDelete("/", async ([FromBody] DeleteLocalityRequest request,
                                            [FromServices] IDeleteLocalityHandler handler,
                                            CancellationToken cancellationToken) =>
         {
@@ -117,7 +119,7 @@ public static class LocalityEndpoints
             .RequireAuthorization("Administrador")
             .WithTags("Localities");
 
-        app.MapGet("localities", async ([FromQuery] int? page,
+        localitiesRoute.MapGet("/", async ([FromQuery] int? page,
                                         [FromQuery] int? pageSize,
                                         [FromServices] ILocalityQueriesServices services,
                                         CancellationToken cancellationToken) =>
@@ -136,7 +138,7 @@ public static class LocalityEndpoints
             .RequireAuthorization("Administrador")
             .WithTags("Localities");
 
-        app.MapGet("localities/search-by-state/{state}", async ([FromRoute] string state,
+        localitiesRoute.MapGet("/search-by-state/{state}", async ([FromRoute] string state,
                                                  [FromServices] ILocalityQueriesServices services,
                                                  CancellationToken cancellationToken) =>
         {
@@ -152,7 +154,7 @@ public static class LocalityEndpoints
             .RequireAuthorization("Administrador")
             .WithTags("Localities");
 
-        app.MapGet("localities/search-by-ibgeId/{ibgeId}", async ([FromRoute] string ibgeId,
+        localitiesRoute.MapGet("/search-by-ibgeId/{ibgeId}", async ([FromRoute] string ibgeId,
                                                  [FromServices] ILocalityQueriesServices services,
                                                  CancellationToken cancellationToken) =>
         {
@@ -178,7 +180,7 @@ public static class LocalityEndpoints
             .WithTags("Localities");
 
 
-        app.MapGet("localities/search-by-city/{city}", async ([FromRoute] string city,
+        localitiesRoute.MapGet("/search-by-city/{city}", async ([FromRoute] string city,
                                                               [FromServices] ILocalityQueriesServices services,
                                                               CancellationToken cancellationToken) =>
         {

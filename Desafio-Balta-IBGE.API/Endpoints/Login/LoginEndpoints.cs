@@ -8,20 +8,11 @@ namespace Desafio_Balta_IBGE.API.Endpoints.Login
 {
     public static class LoginEndpoints
     {
-        public static void AddLoginRoutes(this WebApplication app)
+        public static void AddLoginRoutes(this RouteGroupBuilder route)
         {
-            app.MapGet("health-check", () => 
-                Results.Ok("Estou viva :)")
-            )
-                .Produces(StatusCodes.Status200OK)
-                .WithOpenApi(operation => new(operation)
-                {
-                    Summary = "Verifica se a aplicação está funcionado",
-                    Description = "Endpoint para verificar se a conexão da aplicação está funcionando.",
-                })
-                .WithTags("HealthCheck");
+            var loginRoute = route.MapGroup("auth");
 
-            app.MapPost("login", async ([FromBody] LoginRequest request,
+            loginRoute.MapPost("/login", async ([FromBody] LoginRequest request,
                                         [FromServices] ILoginHandler handler,
                                         CancellationToken cancellationToken) =>
             {
